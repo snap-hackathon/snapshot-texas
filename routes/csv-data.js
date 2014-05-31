@@ -9,7 +9,7 @@ var csv = require("csv");
 */
 
 
-function read_file(file_name, columns, callback) {
+function read_file(file_name, zip, columns, callback) {
     var names = [];
     csv().from.path(__dirname + "/../Data/" + file_name, {
         delimiter: ",",
@@ -18,17 +18,17 @@ function read_file(file_name, columns, callback) {
 
     // when a record is found in the CSV file (a row)
     .on("record", function(row, index) {
-        var zip, obj;
+        var zip_provided, obj;
         // skip the header row
         if (index === 0) {
             return;
         }
         // for()
         // read in the data from the row
-        zip = row[2].trim();
-        // lastName = row[1].trim();
+        zip_provided = row[2].trim();
+        // // lastName = row[1].trim();
 
-        if (zip !== "78705")
+        if (zip_provided !== zip)
             return;
         for (var i = 0; i < columns.length; i++) {
             obj = {};
@@ -53,7 +53,7 @@ function read_file(file_name, columns, callback) {
     });
 }
 
-module.exports.something = {
+module.exports.dataZip = {
     handler: function(request, reply) {
         var file_name = ["SNAP_Particpation_and_Race_Merged.csv"];
         var allNames = [];
@@ -155,7 +155,7 @@ module.exports.something = {
             "name": "householdncomeWithOnlyEarnedIncome",
             "index": 32
         }];
-        read_file(file_name[0], columns, function(names) {
+        read_file(file_name[0], request.params.zip, columns, function(names) {
             allNames.push(names);
             // read_file(file_name[1], columns, function(names) {
             //     allNames.push(names);
