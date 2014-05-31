@@ -1,0 +1,18 @@
+{
+    "name": "CivicHackApp",
+    "description": "civic hack app",
+    "version": "0.0.1",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/snap-hackathon/CivicHackApp.git"
+    },
+    "scripts": {
+        "start": "node app"
+    },
+    "dependencies": {
+        "hapi": "^4.1.2",
+        "js-yaml": "^3.0.2"
+    },
+    "devDependencies": {}
+}
