@@ -63,7 +63,6 @@ module.exports.dataZip = {
         }, {
             "name": "county",
             "index": 0
-<<<<<<< HEAD
         }, {
             "name": "totalSnapHouseholds",
             "index": 3
@@ -155,7 +154,6 @@ module.exports.dataZip = {
         }, {
             "name": "householdncomeWithOnlyEarnedIncome",
             "index": 32
-=======
         },{
             "name": "total snap households",
             "index": 3
@@ -247,17 +245,13 @@ module.exports.dataZip = {
         },{
         	"name": "household income with only earned income",
         	"index": 32
->>>>>>> 2d2dd10a92ff214a557cd3c2576858a9e61bf20c
         }];
         read_file(file_name[0], request.params.zip, columns, function(names) {
             allNames.push(names);
-<<<<<<< HEAD
             // read_file(file_name[1], columns, function(names) {
             //     allNames.push(names);
             // });
             reply(allNames);
-=======
->>>>>>> 2d2dd10a92ff214a557cd3c2576858a9e61bf20c
         });
     }
 };
