@@ -5,7 +5,7 @@ var csv = require("csv");
 module.exports.something = {
     handler: function(request, reply) {
     	var names = [];
-        csv().from.path("../Data/Cost_of_Food.csv", {
+        csv().from.path(__dirname + "/../Data/Cost_of_Food.csv", {
             delimiter: ",",
             escape: '"'
         })
