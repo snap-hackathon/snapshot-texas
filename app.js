@@ -24,7 +24,7 @@ serverConfiguration = {
         engines: {
             "html": "handlebars"
         },
-        path: __dirname + "/templates",
+        path: __dirname + "/views",
     }
 };
 
