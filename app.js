@@ -19,7 +19,13 @@ serverOptions = {
 // hapi server configuration options
 serverConfiguration = {
     cors: true,
-    security: true
+    security: true,
+    views: {
+        engines: {
+            "html": "handlebars"
+        },
+        path: __dirname + "/templates",
+    }
 };
 
 // create the hapi server

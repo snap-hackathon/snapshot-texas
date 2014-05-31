@@ -4,6 +4,7 @@
         "module": false,
         "require": false,
         "console": false,
-        "process": false
+        "process": false,
+        "__dirname": false
     }
 }
