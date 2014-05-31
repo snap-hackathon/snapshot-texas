@@ -8,11 +8,12 @@
         "url": "https://github.com/snap-hackathon/CivicHackApp.git"
     },
     "scripts": {
-        "start": "node app"
+        "start": "nodemon app.js"
     },
     "dependencies": {
         "hapi": "^4.1.2",
-        "js-yaml": "^3.0.2"
+        "js-yaml": "^3.0.2",
+        "nodemon": "^1.1.1"
     },
     "devDependencies": {}
 }
