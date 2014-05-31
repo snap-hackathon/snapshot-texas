@@ -8,6 +8,7 @@ var csv = require("csv");
 
 */
 
+
 function read_file(file_name, columns, callback) {
     var names = [];
     csv().from.path(__dirname + "/../Data/" + file_name, {
@@ -40,7 +41,6 @@ function read_file(file_name, columns, callback) {
         // perform some operation with the data 
         // ...
 
-
     })
     // when the end of the CSV document is reached
     .on("end", function() {
@@ -53,26 +53,114 @@ function read_file(file_name, columns, callback) {
     });
 }
 
-
 module.exports.something = {
     handler: function(request, reply) {
-        var file_name = ["SNAP_Particpation_and_Race_Merged.csv", "Cost_of_Food.csv", "Food_Banks.csv"];
+        var file_name = ["SNAP_Particpation_and_Race_Merged.csv"];
         var allNames = [];
         var columns = [{
             "name": "zip",
             "index": 2
-        },{
+        }, {
             "name": "county",
             "index": 0
-        },{
-            "name": ""
+        }, {
+            "name": "totalSnapHouseholds",
+            "index": 3
+        }, {
+            "name": "averageMonthlySnapBenefitPerHousehold",
+            "index": 4
+
+        }, {
+            "name": "totalBenefits",
+            "index": 5
+        }, {
+            "name": "totalSnapRecipients",
+            "index": 6
+        }, {
+            "name": "recipients0To17",
+            "index": 7
+        }, {
+            "name": "recipients18To64",
+            "index": 8
+        }, {
+            "name": "recipients65+",
+            "index": 9
+        }, {
+            "name": "totalIncomeEligibleIndividuals",
+            "index": 10
+        }, {
+            "name": "incomeEligible0To17",
+            "index": 11
+        }, {
+            "name": "incomeEligible18To64",
+            "index": 12
+        }, {
+            "name": "incomeEligible65+",
+            "index": 13
+        }, {
+            "name": "totalIncomeEligibleButNotReceiving",
+            "index": 14
+        }, {
+            "name": "incomeEligibleButNotReceiving0To17",
+            "index": 15
+        }, {
+            "name": "incomeEligibleButNotReceiving18To64",
+            "index": 16
+        }, {
+            "name": "incomeEligibleButNotReceiving65+",
+            "index": 17
+        }, {
+            "name": "totalParticipationRate",
+            "index": 18
+        }, {
+            "name": "participationRate0To17",
+            "index": 19
+        }, {
+            "name": "participationRate18To64",
+            "index": 20
+        }, {
+            "name": "participationRate65+",
+            "index": 21
+        }, {
+            "name": "recipientRate_NativeAmerican",
+            "index": 22
+        }, {
+            "name": "recipientRate_Asian",
+            "index": 23
+        }, {
+            "name": "recipientRate_Black",
+            "index": 24
+        }, {
+            "name": "recipientRate_Pacific_Islander",
+            "index": 25
+        }, {
+            "name": "recipientRate_White",
+            "index": 26
+        }, {
+            "name": "recipientRate_Multi_Race",
+            "index": 27
+        }, {
+            "name": "recipientRate_Unknown_Missing",
+            "index": 28
+        }, {
+            "name": "recipientEthnicity_hispanic",
+            "index": 29
+        }, {
+            "name": "recipientEthnicity_Non_Hispanic",
+            "index": 30
+        }, {
+            "name": "householdIncomeWithEarnedIncome",
+            "index": 31
+        }, {
+            "name": "householdncomeWithOnlyEarnedIncome",
+            "index": 32
         }];
         read_file(file_name[0], columns, function(names) {
             allNames.push(names);
-            read_file(file_name[1], columns, function(names) {
-                allNames.push(names);
-                reply(allNames);
-            });
+            // read_file(file_name[1], columns, function(names) {
+            //     allNames.push(names);
+            // });
+            reply(allNames);
         });
     }
 };
