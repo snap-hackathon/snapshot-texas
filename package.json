@@ -14,7 +14,8 @@
         "hapi": "^4.1.2",
         "js-yaml": "^3.0.2",
         "nodemon": "^1.1.1",
-        "csv": "^0.4.0"
+        "csv": "0.3.6",
+        "handlebars": "*"
     },
     "devDependencies": {}
 }
