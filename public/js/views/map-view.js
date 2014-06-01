@@ -10,7 +10,7 @@ define([
 
     window.initialize = function() {
         var mapOptions = {
-            zoom: 12,
+            zoom: 11,
             center: new google.maps.LatLng(latitude, longitude),
             mapTypeId: google.maps.MapTypeId.TERRAIN
         };

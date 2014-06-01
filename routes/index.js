@@ -9,6 +9,7 @@ module.exports.endpoints = [
     { method: "GET", path: "/api/county-data/{county}",  config: csvData.dataCounty },
     { method: "GET", path: "/api/lookup-map-data/{zip}", config: mapData.lookupMapData },
     { method: "GET", path: "/api/constituent-stories",   config: constituentStories.get },
+    { method: "GET", path: "/api/constituent-stories/{county}", config: constituentStories.county },
     { method: "GET", path: "/app/{path*}", handler: {
         view: {
             template: "index.html"

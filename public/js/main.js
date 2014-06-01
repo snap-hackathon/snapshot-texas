@@ -11,6 +11,8 @@ require.config({
         "details-view": "views/details-view",
         "map-model": "models/map-model",
         "map-view": "views/map-view",
+        "constituent-story-model": "models/constituent-story-model",
+        "constituent-story-view": "views/constituent-story-view",
         "router": "router",
         "app": "app"
     },

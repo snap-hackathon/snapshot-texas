@@ -6,8 +6,11 @@ define([
     "highcharts",
     "map-model",
     "map-view",
+    "constituent-story-model",
+    "constituent-story-view",
     "text!../templates/details.html"
-], function(Backbone, _, $, Highcharts, MapModel, MapView, detailsHtml) {
+], function(Backbone, _, $, Highcharts, MapModel, MapView, ConstituentStoryModel,
+    ConstituentStoryView, detailsHtml) {
     "use strict";
 
     return Backbone.View.extend({
@@ -54,6 +57,16 @@ define([
 
             // kick off our map model fetch
             this.mapModel.fetch();
+
+            // add constituent view
+            this.constituentStoryModel = new ConstituentStoryModel(this.model.toJSON().county);
+            this.constituentStoryView = new ConstituentStoryView({
+                model: this.constituentStoryModel
+            });
+            $("#constituent-story").append(this.constituentStoryView.$el);
+
+            // kick off the constituent model fetch to render it
+            this.constituentStoryModel.fetch();
 
             return this;
         },
