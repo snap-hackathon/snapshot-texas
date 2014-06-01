@@ -12,7 +12,9 @@ define([
 
         template: _.template(overviewHtml),
 
-        events: {},
+        events: {
+            "click #submit-zip": "submitZip"
+        },
 
         initialize: function() {
         },
@@ -27,6 +29,19 @@ define([
             // render the overview page
             this.$el.html(this.template());
             return this;
+        },
+
+        submitZip: function(event) {
+            var zip;
+
+            event.preventDefault();
+
+            zip = $("#zipcode").val();
+
+            Backbone.history.navigate("details/" + zip, {
+                trigger: true
+            });
+            return;
         }
     });
 });
