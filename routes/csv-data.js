@@ -247,40 +247,40 @@ module.exports.dataZip = {
 
 
 function read_file_county(file_name, itemToMatchValue, columns, callback) {
-    var names = [];
+    var countyData = [];
+
     csv().from.path(__dirname + "/../Data/" + file_name, {
         delimiter: ",",
         escape: '"'
     })
-
     // when a record is found in the CSV file (a row)
     .on("record", function(row, index) {
-        var item, obj;
+        var item, obj, value, i;
+
         // skip the header row
         if (index === 0) {
             return;
         }
+
         // get item needed to match it to itemtomatchvalue
-        item =row[0].trim();
-        if (item + "" !== itemToMatchValue)
+        item = row[0].trim();
+        if (item !== itemToMatchValue) {
             return;
-        var value;
-        for (var i = 0; i < columns.length; i++) {
-            obj = {};
+        }
+
+        obj = {};
+        for (i = 0; i < columns.length; i++) {
             value = row[columns[i].index].trim();
             value = value.replace(/\$/, "");
             value = value.replace(/\#/, "");
             obj[columns[i].name] = value;
-            //console.log(columns[i].name);
-            names.push(obj);
         }
+        countyData.push(obj);
 
     })
     // when the end of the CSV document is reached
     .on("end", function() {
-        var arr = sort_descending(names);
-        
-        // console.log("GOt here!!!");
+        var arr = sort_descending(countyData);
         callback(arr);
     })
     // if any errors occur
@@ -292,7 +292,6 @@ function read_file_county(file_name, itemToMatchValue, columns, callback) {
 module.exports.dataCounty = {
     handler: function(request, reply) {
         var file_name = ["SNAP_Particpation_and_Race_Merged.csv"];
-        var allNames = [];
         var columns = [{
             "name": "zip",
             "index": 2
@@ -313,51 +312,61 @@ module.exports.dataCounty = {
             "index": 18
         }];
         read_file_county(file_name[0], request.params.county, columns, function(names) {
-            
-            
             reply(names);
         });
     }
 };
 
-function sort_descending(names)
-{
+function sort_descending(names) {
     var retArray = [];
-    
-    for (var a = 0; a < names.length; a++)
-    {
-        var maxVal = -1;
-        var arr = [];
-        var indexToRemove = 0;
-        var remove = false;
-        for (var b = 0; b < names.length; b++)
-        {
-            //console.log("qwfjwgi");
-            //console.log("B: " + (b + 1) + ", partRate = " + names[b]["totalParticipationRate"]);
-            var temp = parseInt(names[b]["totalParticipationRate"]);     
-            // temp  = temp.replace(/\%/, "");
-            if (((b + 1) % 6 === 0) && (temp >= maxVal))
-            {
-                // console.log(maxVal)
-                // console.log("TEMP " + temp);
-                maxVal = temp;
-                remove = true;
-                //arr = names.slice(b - 5, b + 1);
-                indexToRemove = b - 5;
-                //console.log(arr);
+    var values = [];
+
+    var maxVal = -1;
+    var amountAdded = 0;
+
+    for (var a = 0; a < names.length; a++) {
+        var add = false;
+        var total = parseInt(names[a].totalIncomeEligibleButNotReceiving);
+
+        if (amountAdded < 30) {
+            add = true;
+            values.push({
+                total: total,
+                index: retArray.length - 1
+            });
+        } else {
+            // check if this value is higher than any value currently in array
+            for (var i=0; i<values.length; i++) {
+                if (values[i].total < total) {
+                    // should be added
+                    retArray.splice(values[i].index, 1, names[a]);
+                    values[i].total = total;
+
+                    // don't add it later though
+                    add = false;
+                    break;
+                } else {
+                    // should not be added
+                    add = false;
+                }
             }
-
         }
 
-        if (remove)
-        {
-            arr = names.splice(indexToRemove, 6);
-            retArray.push(arr);
+        if (add) {
+            retArray.push(names[a]);
+            amountAdded++;
         }
-
     }
-    if(retArray.length > 180)
-        return retArray.slice(0, 180);
-    // console.log(retArray);
+
+    retArray.sort(function(a, b) {
+        if (parseInt(a.totalIncomeEligibleButNotReceiving) > parseInt(b.totalIncomeEligibleButNotReceiving)) {
+            return -1;
+        } else if (parseInt(a.totalIncomeEligibleButNotReceiving) < parseInt(b.totalIncomeEligibleButNotReceiving)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+
     return retArray;
 }
