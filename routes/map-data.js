@@ -68,6 +68,8 @@ function parseMapData(zip, callback) {
         }
 
         if (row[3] == zip) {
+            found = true;
+
             mapData.latitude = row[4];
             mapData.longitude = row[9];
             mapData.coordinates = parseCoordinates(row[11]);
