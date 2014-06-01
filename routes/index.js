@@ -3,7 +3,7 @@
 var csvData = require("./csv-data");
 
 module.exports.endpoints = [
-    { method: "GET", path: "/api/data/{zip}", config: csvData.dataZip },
+    { method: "GET", path: "/api/zipcode-data/{zip}", config: csvData.dataZip },
     { method: "GET", path: "/app/{path*}", handler: {
         view: {
             template: "index.html"
