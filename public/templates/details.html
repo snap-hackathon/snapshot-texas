@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8">
-       <h3>SNAPshot Texas <% if (county && zip) { %><small><strong><%- county %> - <%- zip %></strong></small><% } %></h3>
+       <h3>SNAPshot Texas</h3>
     </div>
     <form class="col-md-4 form-group" style="text-align:right">
         &nbsp;<br />
@@ -17,13 +17,14 @@
     <div class="col-md-6">
         <div class="row">
           <div class="col-md-12">
-            <h3><%- county%> County Information</h3>
+            <h3><% if (county && zip) { %><%- county %> - <%- zip %><% } %></h3>
             <hr />
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div id="map"></div>
+            <h3>In <%- county %> County&hellip;</h3>
             <hr />
           </div>
         </div>
