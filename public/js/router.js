@@ -2,16 +2,18 @@
 define([
     "backbone",
     "jquery",
+    "overview-view",
     "details-model",
     "details-view",
     "map-model",
     "map-view"
-], function(Backbone, $, DetailsModel, DetailsView, MapModel, MapView) {
+], function(Backbone, $, OverviewView, DetailsModel, DetailsView, MapModel, MapView) {
     "use strict";
 
     var Router = Backbone.Router.extend({
         routes: {
             "": "landing",
+            "overview": "overview",
             "details/:zip": "details",
             "*invalidRoute": "badRoute"
         },
@@ -21,10 +23,19 @@ define([
         },
 
         landing: function() {
-            // default them to 78704
-            Backbone.history.navigate("details/78704", {
+            // send them to the overview page
+            Backbone.history.navigate("overview", {
                 trigger: true
             });
+        },
+
+        overview: function() {
+            if (this.currentView) {
+                this.currentView.close();
+            }
+
+            this.currentView = new OverviewView();
+            this.currentView.render();
         },
 
         details: function(zip) {
