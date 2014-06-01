@@ -261,9 +261,7 @@ function read_file_county(file_name, itemToMatchValue, columns, callback) {
             return;
         }
         // get item needed to match it to itemtomatchvalue
-        item = itemToMatchValue.match(/^[0-9]+$/) == null ? row[0].trim() : row[2].trim();
-        // console.log("dsfasdfsdaf "+itemtoMatchValue);
-        // console.log("adfasdfsaf "+item);
+        item =row[0].trim();
         if (item + "" !== itemToMatchValue)
             return;
         var value;
@@ -273,15 +271,17 @@ function read_file_county(file_name, itemToMatchValue, columns, callback) {
             value = value.replace(/\$/, "");
             value = value.replace(/\#/, "");
             obj[columns[i].name] = value;
-            console.log(columns[i].name);
+            //console.log(columns[i].name);
             names.push(obj);
         }
 
     })
     // when the end of the CSV document is reached
     .on("end", function() {
-
-        callback(names);
+        var arr = sort_descending(names);
+        
+        // console.log("GOt here!!!");
+        callback(arr);
     })
     // if any errors occur
     .on("error", function(error) {
@@ -300,102 +300,64 @@ module.exports.dataCounty = {
             "name": "county",
             "index": 0
         }, {
-            "name": "totalSnapHouseholds",
-            "index": 3
-        }, {
-            "name": "averageMonthlySnapBenefitPerHousehold",
-            "index": 4
-
-        }, {
-            "name": "totalBenefits",
-            "index": 5
-        }, {
             "name": "totalSnapRecipients",
             "index": 6
-        }, {
-            "name": "recipients0To17",
-            "index": 7
-        }, {
-            "name": "recipients18To64",
-            "index": 8
-        }, {
-            "name": "recipients65Plus",
-            "index": 9
         }, {
             "name": "totalIncomeEligibleIndividuals",
             "index": 10
         }, {
-            "name": "incomeEligible0To17",
-            "index": 11
-        }, {
-            "name": "incomeEligible18To64",
-            "index": 12
-        }, {
-            "name": "incomeEligible65Plus",
-            "index": 13
-        }, {
             "name": "totalIncomeEligibleButNotReceiving",
             "index": 14
         }, {
-            "name": "incomeEligibleButNotReceiving0To17",
-            "index": 15
-        }, {
-            "name": "incomeEligibleButNotReceiving18To64",
-            "index": 16
-        }, {
-            "name": "incomeEligibleButNotReceiving65Plus",
-            "index": 17
-        }, {
             "name": "totalParticipationRate",
             "index": 18
-        }, {
-            "name": "participationRate0To17",
-            "index": 19
-        }, {
-            "name": "participationRate18To64",
-            "index": 20
-        }, {
-            "name": "participationRate65Plus",
-            "index": 21
-        }, {
-            "name": "recipientRace_NativeAmerican",
-            "index": 22
-        }, {
-            "name": "recipientRace_Asian",
-            "index": 23
-        }, {
-            "name": "recipientRace_Black",
-            "index": 24
-        }, {
-            "name": "recipientRace_Pacific_Islander",
-            "index": 25
-        }, {
-            "name": "recipientRace_White",
-            "index": 26
-        }, {
-            "name": "recipientRace_Multi_Race",
-            "index": 27
-        }, {
-            "name": "recipientRace_Unknown_Missing",
-            "index": 28
-        }, {
-            "name": "recipientEthnicity_hispanic",
-            "index": 29
-        }, {
-            "name": "recipientEthnicity_Non_Hispanic",
-            "index": 30
-        }, {
-            "name": "recipientEthnicity_Unknown_Missing",
-            "index": 31
-        }, {
-            "name": "householdIncomeWithEarnedIncome",
-            "index": 32
-        }, {
-            "name": "householdncomeWithOnlyEarnedIncome",
-            "index": 33
         }];
         read_file_county(file_name[0], request.params.county, columns, function(names) {
+            
+            
             reply(names);
         });
     }
 };
+
+function sort_descending(names)
+{
+    var retArray = [];
+    
+    for (var a = 0; a < names.length; a++)
+    {
+        var maxVal = -1;
+        var arr = [];
+        var indexToRemove = 0;
+        var remove = false;
+        for (var b = 0; b < names.length; b++)
+        {
+            //console.log("qwfjwgi");
+            //console.log("B: " + (b + 1) + ", partRate = " + names[b]["totalParticipationRate"]);
+            var temp = parseInt(names[b]["totalParticipationRate"]);     
+            // temp  = temp.replace(/\%/, "");
+            if (((b + 1) % 6 === 0) && (temp >= maxVal))
+            {
+                // console.log(maxVal)
+                // console.log("TEMP " + temp);
+                maxVal = temp;
+                remove = true;
+                //arr = names.slice(b - 5, b + 1);
+                indexToRemove = b - 5;
+                //console.log(arr);
+            }
+
+        }
+
+        if (remove)
+        {
+            arr = names.splice(indexToRemove, 6);
+            retArray.push(arr);
+        }
+
+    }
+    if(retArray.length > 180)
+        return retArray.slice(0, 180);
+    // console.log(retArray);
+    return retArray;
+}
