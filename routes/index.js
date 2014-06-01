@@ -15,6 +15,9 @@ module.exports.endpoints = [
             template: "index.html"
         }
     }},
+    { method: "GET", path: "/", handler: function(request, reply) {
+        reply().redirect("/app");
+    }},
     { method: "GET", path: "/public/{path*}", handler: {
         directory: { path: './public', listing: false, index: true }
     }}
