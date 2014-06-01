@@ -48,111 +48,142 @@ module.exports.dataZip = {
 
         async.waterfall([
             function(waterfallCallback) {
-                var file_name = "SNAP_Particpation_and_Race_Merged.csv";
-                var columns = [{
-                    "name": "zip",
-                    "index": 2
-                }, {
-                    "name": "county",
-                    "index": 0
-                }, {
-                    "name": "totalSnapHouseholds",
-                    "index": 3
-                }, {
-                    "name": "averageMonthlySnapBenefitPerHousehold",
-                    "index": 4
+                async.parallel([
+                    function(parallelCallback) {
+                        var file_name = "SNAP_Particpation_and_Race_Merged.csv";
 
-                }, {
-                    "name": "totalBenefits",
-                    "index": 5
-                }, {
-                    "name": "totalSnapRecipients",
-                    "index": 6
-                }, {
-                    "name": "recipients0To17",
-                    "index": 7
-                }, {
-                    "name": "recipients18To64",
-                    "index": 8
-                }, {
-                    "name": "recipients65Plus",
-                    "index": 9
-                }, {
-                    "name": "totalIncomeEligibleIndividuals",
-                    "index": 10
-                }, {
-                    "name": "incomeEligible0To17",
-                    "index": 11
-                }, {
-                    "name": "incomeEligible18To64",
-                    "index": 12
-                }, {
-                    "name": "incomeEligible65Plus",
-                    "index": 13
-                }, {
-                    "name": "totalIncomeEligibleButNotReceiving",
-                    "index": 14
-                }, {
-                    "name": "incomeEligibleButNotReceiving0To17",
-                    "index": 15
-                }, {
-                    "name": "incomeEligibleButNotReceiving18To64",
-                    "index": 16
-                }, {
-                    "name": "incomeEligibleButNotReceiving65Plus",
-                    "index": 17
-                }, {
-                    "name": "totalParticipationRate",
-                    "index": 18
-                }, {
-                    "name": "participationRate0To17",
-                    "index": 19
-                }, {
-                    "name": "participationRate18To64",
-                    "index": 20
-                }, {
-                    "name": "participationRate65Plus",
-                    "index": 21
-                }, {
-                    "name": "recipientRace_NativeAmerican",
-                    "index": 22
-                }, {
-                    "name": "recipientRace_Asian",
-                    "index": 23
-                }, {
-                    "name": "recipientRace_Black",
-                    "index": 24
-                }, {
-                    "name": "recipientRace_Pacific_Islander",
-                    "index": 25
-                }, {
-                    "name": "recipientRace_White",
-                    "index": 26
-                }, {
-                    "name": "recipientRace_Multi_Race",
-                    "index": 27
-                }, {
-                    "name": "recipientRace_Unknown_Missing",
-                    "index": 28
-                }, {
-                    "name": "recipientEthnicity_hispanic",
-                    "index": 29
-                }, {
-                    "name": "recipientEthnicity_Non_Hispanic",
-                    "index": 30
-                }, {
-                    "name": "recipientEthnicity_Unknown_Missing",
-                    "index": 31
-                }, {
-                    "name": "householdIncomeWithEarnedIncome",
-                    "index": 32
-                }, {
-                    "name": "householdncomeWithOnlyEarnedIncome",
-                    "index": 33
-                }];
-                read_file(file_name, request.params.zip, 2, columns, function(data) {
+                        var columns = [{
+                            "name": "zip",
+                            "index": 2
+                        }, {
+                            "name": "county",
+                            "index": 0
+                        }, {
+                            "name": "totalSnapHouseholds",
+                            "index": 3
+                        }, {
+                            "name": "averageMonthlySnapBenefitPerHousehold",
+                            "index": 4
+
+                        }, {
+                            "name": "totalBenefits",
+                            "index": 5
+                        }, {
+                            "name": "totalSnapRecipients",
+                            "index": 6
+                        }, {
+                            "name": "recipients0To17",
+                            "index": 7
+                        }, {
+                            "name": "recipients18To64",
+                            "index": 8
+                        }, {
+                            "name": "recipients65Plus",
+                            "index": 9
+                        }, {
+                            "name": "totalIncomeEligibleIndividuals",
+                            "index": 10
+                        }, {
+                            "name": "incomeEligible0To17",
+                            "index": 11
+                        }, {
+                            "name": "incomeEligible18To64",
+                            "index": 12
+                        }, {
+                            "name": "incomeEligible65Plus",
+                            "index": 13
+                        }, {
+                            "name": "totalIncomeEligibleButNotReceiving",
+                            "index": 14
+                        }, {
+                            "name": "incomeEligibleButNotReceiving0To17",
+                            "index": 15
+                        }, {
+                            "name": "incomeEligibleButNotReceiving18To64",
+                            "index": 16
+                        }, {
+                            "name": "incomeEligibleButNotReceiving65Plus",
+                            "index": 17
+                        }, {
+                            "name": "totalParticipationRate",
+                            "index": 18
+                        }, {
+                            "name": "participationRate0To17",
+                            "index": 19
+                        }, {
+                            "name": "participationRate18To64",
+                            "index": 20
+                        }, {
+                            "name": "participationRate65Plus",
+                            "index": 21
+                        }, {
+                            "name": "recipientRace_NativeAmerican",
+                            "index": 22
+                        }, {
+                            "name": "recipientRace_Asian",
+                            "index": 23
+                        }, {
+                            "name": "recipientRace_Black",
+                            "index": 24
+                        }, {
+                            "name": "recipientRace_Pacific_Islander",
+                            "index": 25
+                        }, {
+                            "name": "recipientRace_White",
+                            "index": 26
+                        }, {
+                            "name": "recipientRace_Multi_Race",
+                            "index": 27
+                        }, {
+                            "name": "recipientRace_Unknown_Missing",
+                            "index": 28
+                        }, {
+                            "name": "recipientEthnicity_hispanic",
+                            "index": 29
+                        }, {
+                            "name": "recipientEthnicity_Non_Hispanic",
+                            "index": 30
+                        }, {
+                            "name": "recipientEthnicity_Unknown_Missing",
+                            "index": 31
+                        }, {
+                            "name": "householdIncomeWithEarnedIncome",
+                            "index": 32
+                        }, {
+                            "name": "householdncomeWithOnlyEarnedIncome",
+                            "index": 33
+                        }];
+                        read_file(file_name, request.params.zip, 2, columns, function(data) {
+                            parallelCallback(null, data);
+                        });
+                    },
+                    function(parallelCallback) {
+                        var file_name = "SNAP_Eligibility_vs_Participation_plus_SNAP_meals.csv"
+                        var columns = [{
+                            "name": "averageBenefitPerRecipient",
+                            "index": 7,
+                        }, {
+                            "name": "averageBenefitperMeal",
+                            "index": 8
+                        }];
+
+                        read_file(file_name, request.params.zip, 2, columns, function(data) {
+                            parallelCallback(null, data);
+                        });
+
+                    }
+                ], function(err, results) {
+                    var data = {};
+
+                    for (var i = 0; i < results.length; i++) {
+                        data = extend(data, results[i]);
+                    }
+
                     waterfallCallback(null, data);
+                    // the results array will equal ['one','two'] even though
+                    // the second function had a shorter timeout.
                 });
+
             }
         ], function(err, data) {
             var county = data.county;
