@@ -1,21 +1,10 @@
 "use strict";
 
-var Hapi = require("hapi"),
-    csv = require("csv"),
+var csv = require("csv"),
     async = require("async"),
     extend = require("xtend");
 
-/*
-    -read each individual file
-    -first file should have zipcode
-    -second file and onward should be easy since zipcode can be mapped to anything
-*/
-
 function read_file(file_name, itemToMatchValue, itemToMatchIndex, columns, callback) {
-    var found;
-
-    found = false;
-
     csv().from.path(__dirname + "/../Data/" + file_name, {
         delimiter: ",",
         escape: '"'
@@ -35,27 +24,22 @@ function read_file(file_name, itemToMatchValue, itemToMatchIndex, columns, callb
             return;
         }
 
-        found = true;
-
         obj = {};
         for (var i = 0; i < columns.length; i++) {
             value = row[columns[i].index].trim();
             value = value.replace(/\$/, "");
+            value = value.replace(/\#/, "");
             obj[columns[i].name] = value;
         }
-        callback(null, obj);
+        callback(obj);
     })
     // when the end of the CSV document is reached
     .on("end", function() {
-        if (found) {
-            // do nothing
-        } else {
-            callback("Unable to find item");
-        }
+        // do nothing
     })
     // if any errors occur
     .on("error", function(error) {
-        callback(error);
+        console.log(error.message);
     });
 }
 
@@ -77,6 +61,7 @@ module.exports.dataZip = {
                 }, {
                     "name": "averageMonthlySnapBenefitPerHousehold",
                     "index": 4
+
                 }, {
                     "name": "totalBenefits",
                     "index": 5
@@ -129,25 +114,25 @@ module.exports.dataZip = {
                     "name": "participationRate65Plus",
                     "index": 21
                 }, {
-                    "name": "recipientRate_NativeAmerican",
+                    "name": "recipientRace_NativeAmerican",
                     "index": 22
                 }, {
-                    "name": "recipientRate_Asian",
+                    "name": "recipientRace_Asian",
                     "index": 23
                 }, {
-                    "name": "recipientRate_Black",
+                    "name": "recipientRace_Black",
                     "index": 24
                 }, {
-                    "name": "recipientRate_Pacific_Islander",
+                    "name": "recipientRace_Pacific_Islander",
                     "index": 25
                 }, {
-                    "name": "recipientRate_White",
+                    "name": "recipientRace_White",
                     "index": 26
                 }, {
-                    "name": "recipientRate_Multi_Race",
+                    "name": "recipientRace_Multi_Race",
                     "index": 27
                 }, {
-                    "name": "recipientRate_Unknown_Missing",
+                    "name": "recipientRace_Unknown_Missing",
                     "index": 28
                 }, {
                     "name": "recipientEthnicity_hispanic",
@@ -156,26 +141,21 @@ module.exports.dataZip = {
                     "name": "recipientEthnicity_Non_Hispanic",
                     "index": 30
                 }, {
-                    "name": "householdIncomeWithEarnedIncome",
+                    "name": "recipientEthnicity_Unknown_Missing",
                     "index": 31
                 }, {
-                    "name": "householdncomeWithOnlyEarnedIncome",
+                    "name": "householdIncomeWithEarnedIncome",
                     "index": 32
+                }, {
+                    "name": "householdncomeWithOnlyEarnedIncome",
+                    "index": 33
                 }];
-                read_file(file_name, request.params.zip, 2, columns, function(err, data) {
-                    waterfallCallback(err, data);
+                read_file(file_name, request.params.zip, 2, columns, function(data) {
+                    waterfallCallback(null, data);
                 });
             }
         ], function(err, data) {
-            var county;
-
-            if (err) {
-                console.error(err);
-                reply(Hapi.error.badImplementation(err));
-                return;
-            }
-
-            county = data.county;
+            var county = data.county;
             async.parallel([
                 function(parallelCallback) {
                     var file_name = "Food_Banks.csv";
@@ -192,8 +172,8 @@ module.exports.dataZip = {
                         "name": "website",
                         "index": 4
                     }];
-                    read_file(file_name, county, 0, columns, function(err, newData) {
-                        parallelCallback(err, newData);
+                    read_file(file_name, county, 0, columns, function(newData) {
+                        parallelCallback(null, newData);
                     });
                 },
                 function(parallelCallback) {
@@ -217,18 +197,12 @@ module.exports.dataZip = {
                         "name": "weightedCostPerMeal",
                         "index": 6
                     }];
-                    read_file(file_name, county, 0, columns, function(err, newData) {
-                        parallelCallback(err, newData);
+                    read_file(file_name, county, 0, columns, function(newData) {
+                        parallelCallback(null, newData);
                     });
                 }
             ], function(err, results) {
                 var i;
-
-                if (err) {
-                    console.error(err);
-                    reply(Hapi.error.badImplementation(err));
-                    return;
-                }
 
                 for (i = 0; i < results.length; i++) {
                     data = extend(data, results[i]);
@@ -241,7 +215,7 @@ module.exports.dataZip = {
 };
 
 
-function read_file_county(file_name, county, columns, callback) {
+function read_file_county(file_name, itemToMatchValue, columns, callback) {
     var names = [];
     csv().from.path(__dirname + "/../Data/" + file_name, {
         delimiter: ",",
@@ -250,28 +224,27 @@ function read_file_county(file_name, county, columns, callback) {
 
     // when a record is found in the CSV file (a row)
     .on("record", function(row, index) {
-        var county_provided, obj;
+        var item, obj;
         // skip the header row
         if (index === 0) {
             return;
         }
-        // for()
-        // read in the data from the row
-        county_provided = row[0].trim();
-        // // lastName = row[1].trim();
-
-        if (county_provided !== county)
+        // get item needed to match it to itemtomatchvalue
+        item = itemToMatchValue.match(/^[0-9]+$/) == null ? row[0].trim() : row[2].trim();
+        // console.log("dsfasdfsdaf "+itemtoMatchValue);
+        // console.log("adfasdfsaf "+item);
+        if (item + "" !== itemToMatchValue)
             return;
+        var value;
         for (var i = 0; i < columns.length; i++) {
             obj = {};
-            obj[columns[i].name] = row[columns[i].index];
+            value = row[columns[i].index].trim();
+            value = value.replace(/\$/, "");
+            value = value.replace(/\#/, "");
+            obj[columns[i].name] = value;
             console.log(columns[i].name);
             names.push(obj);
         }
-
-        // console.log(zip);
-        // perform some operation with the data 
-        // ...
 
     })
     // when the end of the CSV document is reached
@@ -354,25 +327,25 @@ module.exports.dataCounty = {
             "name": "participationRate65Plus",
             "index": 21
         }, {
-            "name": "recipientRate_NativeAmerican",
+            "name": "recipientRace_NativeAmerican",
             "index": 22
         }, {
-            "name": "recipientRate_Asian",
+            "name": "recipientRace_Asian",
             "index": 23
         }, {
-            "name": "recipientRate_Black",
+            "name": "recipientRace_Black",
             "index": 24
         }, {
-            "name": "recipientRate_Pacific_Islander",
+            "name": "recipientRace_Pacific_Islander",
             "index": 25
         }, {
-            "name": "recipientRate_White",
+            "name": "recipientRace_White",
             "index": 26
         }, {
-            "name": "recipientRate_Multi_Race",
+            "name": "recipientRace_Multi_Race",
             "index": 27
         }, {
-            "name": "recipientRate_Unknown_Missing",
+            "name": "recipientRace_Unknown_Missing",
             "index": 28
         }, {
             "name": "recipientEthnicity_hispanic",
@@ -381,17 +354,16 @@ module.exports.dataCounty = {
             "name": "recipientEthnicity_Non_Hispanic",
             "index": 30
         }, {
-            "name": "householdIncomeWithEarnedIncome",
+            "name": "recipientEthnicity_Unknown_Missing",
             "index": 31
         }, {
-            "name": "householdncomeWithOnlyEarnedIncome",
+            "name": "householdIncomeWithEarnedIncome",
             "index": 32
+        }, {
+            "name": "householdncomeWithOnlyEarnedIncome",
+            "index": 33
         }];
         read_file_county(file_name[0], request.params.county, columns, function(names) {
-            // allNames.push(names);
-            // read_file(file_name[1], columns, function(names) {
-            //     allNames.push(names);
-            // });
             reply(names);
         });
     }
