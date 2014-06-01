@@ -2,12 +2,13 @@
 define([
     "backbone",
     "jquery",
+    "overview-model",
     "overview-view",
     "details-model",
     "details-view",
     "map-model",
     "map-view"
-], function(Backbone, $, OverviewView, DetailsModel, DetailsView, MapModel, MapView) {
+], function(Backbone, $, OverviewModel, OverviewView, DetailsModel, DetailsView, MapModel, MapView) {
     "use strict";
 
     var Router = Backbone.Router.extend({
@@ -30,11 +31,16 @@ define([
         },
 
         overview: function() {
+            var overviewModel;
+
             if (this.currentView) {
                 this.currentView.close();
             }
 
-            this.currentView = new OverviewView();
+            overviewModel = new OverviewModel();
+            this.currentView = new OverviewView({
+                model: overviewModel
+            });
             this.currentView.render();
         },
 

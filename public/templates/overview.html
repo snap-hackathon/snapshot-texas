@@ -51,9 +51,9 @@
                 <tr><th width="50%">Zip Code</th><th width="50%" style="text-align:right">Eligible but not Participating</th></tr>
               </thead>
               <tbody>
-                <tr><td><a href="/app/details/78704">78704</a></td><td align="right">3,000</td></tr>
-                <tr><td><a href="/app/details/78681">78681</a></td><td align="right">2,000</td></tr>
-                <tr><td><a href="/app/details/75770">75770</a></td><td align="right">1,000</td></tr>
+                <% for (var i=0; i<zips.length; i++) { %>
+                  <tr><td><a href="/app/details/<%- zips[i].zip %>"><%- zips[i].zip %></a></td><td align="right"><%- zips[i].totalIncomeEligibleButNotReceiving %></td></tr>
+                <% } %>
               </tbody>
             </table>
           </div>

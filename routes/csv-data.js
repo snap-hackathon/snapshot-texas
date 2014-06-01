@@ -158,7 +158,7 @@ module.exports.dataZip = {
                         });
                     },
                     function(parallelCallback) {
-                        var file_name = "SNAP_Eligibility_vs_Participation_plus_SNAP_meals.csv"
+                        var file_name = "SNAP_Eligibility_vs_Participation_plus_SNAP_meals.csv";
                         var columns = [{
                             "name": "averageBenefitPerRecipient",
                             "index": 7,
@@ -246,7 +246,7 @@ module.exports.dataZip = {
 };
 
 
-function read_file_county(file_name, itemToMatchValue, columns, callback) {
+function read_file_county(file_name, county, columns, callback) {
     var countyData = [];
 
     csv().from.path(__dirname + "/../Data/" + file_name, {
@@ -264,7 +264,7 @@ function read_file_county(file_name, itemToMatchValue, columns, callback) {
 
         // get item needed to match it to itemtomatchvalue
         item = row[0].trim();
-        if (item !== itemToMatchValue) {
+        if (item.toLowerCase() !== county.toLowerCase()) {
             return;
         }
 
@@ -328,7 +328,7 @@ function sort_descending(names) {
         var add = false;
         var total = parseInt(names[a].totalIncomeEligibleButNotReceiving);
 
-        if (amountAdded < 30) {
+        if (amountAdded < 5) {
             add = true;
             values.push({
                 total: total,
