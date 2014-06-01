@@ -10,4 +10,4 @@ mongo:
     password:   ""
     host:       "localhost"
     port:       ""
-    database:   "investments"
+    database:   "civic-hack-app"
