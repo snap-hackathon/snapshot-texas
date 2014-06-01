@@ -33,10 +33,10 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8">
-             <h3>Feeding Texas - <%- zip %></h3>
+             <h3>SNAPshot Texas <% if (county && zip) { %><small><%- county %> - <%- zip %></small><% } %></h3>
           </div>
           <form>
-            <div class="col-md-4 form-group">
+            <div class="col-md-4 form-group" style="text-align:right">
                 &nbsp;<br />
                 <label for="zipcode">Find zip code:</label>
                 <input name="zipcode" id="zipcode" type="text" placeholder="<%- zip %>" />
@@ -64,45 +64,45 @@
               <div class="row">
                 <div class="col-md-6" style="padding-right:20px; border-right: 1px solid #ccc;">
                   Cost of a meal is<br/>
-                  <span class="h1"><!--TODO-->$%mealcost%</span><br />
-                  <strong><!--TODO-->+%mealcostpct%</strong> less/more than the national average.
+                  <span class="h1">$<%- parseFloat(weightedCostPerMeal).toFixed(2) %></span><br />
+                  <big><strong><%- Math.round((1 - costOfFoodIndex) * 100) %>%</big> <%- costOfFoodIndex < 1 ? 'less' : 'more' %></strong> than the national average.
                 </div>
                 <div class="col-md-6">
-                  <span class="h1"><!--TODO-->%pctinsecurity%%</span>
-                  of families have experienced <strong>food insecurity</strong> in this county in the last year.</div>
+                  <span class="h1"><%- individualFoodInsecurityRate %></span>
+                  of people have <strong>experienced <big>food insecurity</big></strong> in this county in the last year.</div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <hr />
-                  <span class="h1"><!--TODO-->%pctcountychildren%</span><span class="h3">children in</span><br />
+                  <span class="h1"><%- childFoodInsecurityRate %></span><span class="h3">children in</span><br />
                   in <%- county %> have experienced
-                  food insecurity<br /> 
-                  in the last year. </p>
-                  <p>That's <strong><!--TODO-->%countcountychildren%</strong> children going hungry.</p>
+                  <big><strong>food insecurity</big> in the last year</strong>.</p>
+                  <p>That's <strong><big><%- foodInsecureChildren %></big> children going hungry</strong>.</p>
                 </div>
               </div>
 
           </div>
           <div class="col-md-6">
               <div class="row">
+                <div class="col-md-12">
+                  <h3>Constituent Story</h3>
+                  <hr />
+                  <img src="/public/images/placeholder.png" width="25%" align="right" />
+                  <p><!-- TODO -->When I needed snap perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                  <h4><a href="submityourstory">Tell us <em>your</em> story!</a><br />&nbsp;</h4>
+                </div>
+              </div>
+              <div class="row">
                 <div class="col-md-12 well">
                   <p><strong>Share this report</strong></p>
                   <p>
+                      <a href="#"><i class="fa fa-print"></i> Print</a> &nbsp;&nbsp;&nbsp;&nbsp;
                       <a href="#"><i class="fa fa-envelope"></i> Email</a> &nbsp;&nbsp;&nbsp;&nbsp;
                       <a href="#"><i class="fa fa-facebook"></i> Facebook</a> &nbsp;&nbsp;&nbsp;&nbsp;
                       <a href="#"><i class="fa fa-twitter"></i> Twitter</a> &nbsp;&nbsp;&nbsp;&nbsp;
                       <a href="#"><i class="fa fa-globe"></i> Embed in my website</a>
                   </p>
                   <p><a href="#"><i class="fa fa-bullhorn"></i> Create a letter to send to my representative</a></p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <h3>Constituent Story</h3>
-                  <hr />
-                  <img src="/public/images/placeholder.png" width="25%" align="right" />
-                  <p><!-- TODO -->When I needed snap perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-                  <h4><a href="submityourstory">Tell us <em>your</em> story!</a></h4>
                 </div>
               </div>
               <div class="row">
@@ -131,41 +131,45 @@
         <div class="row">
           <div class="col-md-6" style="text-align:center">
             <p>
-              <%- totalIncomeEligibleIndividuals %> are eligible for SNAP benefits.<br />
-              Of those eligible, <%- incomeEligible0To17 %> are children, 
-              <%- incomeEligible18To64 %> are adults, and
-              <%- incomeEligible65Plus %> are seniors.
+              <strong><big><%- totalIncomeEligibleIndividuals %></big> people</strong> are eligible for SNAP benefits.<br />
+              Of those eligible, <strong><big><%- incomeEligible0To17 %></big> are children</strong>, 
+              <strong><big><%- incomeEligible18To64 %></big> are adults</strong>, and
+              <strong><big><%- incomeEligible65Plus %></big> are seniors</strong>.
             <div id="percentages" style="width:100%;height:250px"></div>
           </div>
           <div class="col-md-6" style="text-align:center">
-            <p>Only <%- Math.round(100*(totalSnapRecipients / totalIncomeEligibleIndividuals)) %>% of eligible people are actually receiving SNAP benefits.</p>
+            <p>Only <strong><big><%- Math.round(100*(totalSnapRecipients / totalIncomeEligibleIndividuals)) %>%</big></strong> of eligible people are <strong>actually receiving SNAP benefits</strong>.</p>
             <div id="percentreceiving" style="width:100%;height:250px"></div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12" style="text-align:center">
-            <p><!-- TODO -->SNAP only covers $%benefitpermeal% of the $%mealcost% necessary for meal per day.</p>
+            <p>SNAP only covers <strong><big>$<%- parseFloat(averageMonthlySnapBenefitPerHousehold/90).toFixed(2) %></big> of the $<%- parseFloat(weightedCostPerMeal).toFixed(2) %></strong> necessary for each meal.</p>
             <div id="percentbenefits" style="width:100%;height:250px"></div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12" style="text-align:center">
-            <h3>Of those receiving SNAP benefits&hellip;</h3>
+            <h3>Demographics of those receiving SNAP benefits&hellip;</h3>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
-            <div id="percentrcvage" style="width:100%;height:250px"></div>
-          </div>
-          <div class="col-md-6">
+          <div class="col-md-6" style="text-align:center">
+            <p><strong><big>Working vs Non-working Households</big></strong></p>
             <div id="percentrcvworking" style="width:100%;height:250px"></div>
           </div>
+          <div class="col-md-6" style="text-align:center">
+            <p><strong><big>By Age</big></strong></p>
+            <div id="percentrcvage" style="width:100%;height:250px"></div>
+          </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6" style="text-align:center">
+            <p><strong><big>By Race</big></strong></p>
             <div id="percentrcvrace" style="width:100%;height:250px"></div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" style="text-align:center">
+            <p><strong><big>By Ethnicity</big></strong></p>
             <div id="percentrcvethnicity" style="width:100%;height:250px"></div>
           </div>
         </div>
@@ -250,8 +254,8 @@ $(function () {
         series: [{
             type: 'pie',
             data: [
-                ['Covered', 1.23], // TODO
-                ['Not Covered', 2.49] // TODO
+                ['Covered', <%- averageMonthlySnapBenefitPerHousehold/90 %>], // TODO
+                ['Not Covered', <%- weightedCostPerMeal %> ]
             ]
         }]
     });
