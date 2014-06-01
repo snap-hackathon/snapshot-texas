@@ -1,51 +1,42 @@
 "use strict";
 
 var csv = require("csv");
+
 /*
     -read each individual file
     -first file should have zipcode
     -second file and onward should be easy since zipcode can be mapped to anything
-
 */
 
-
-function read_file(file_name, zip, columns, callback) {
-    var names = [];
+function read_file(file_name, zip_to_read, columns, callback) {
     csv().from.path(__dirname + "/../Data/" + file_name, {
         delimiter: ",",
         escape: '"'
     })
-
     // when a record is found in the CSV file (a row)
     .on("record", function(row, index) {
-        var zip_provided, obj;
+        var zip, obj;
+
         // skip the header row
         if (index === 0) {
             return;
         }
-        // for()
-        // read in the data from the row
-        zip_provided = row[2].trim();
-        // // lastName = row[1].trim();
 
-        if (zip_provided !== zip)
+        zip = row[2].trim();
+        if (zip !== zip_to_read) {
+            // skip it, not our zip
             return;
-        for (var i = 0; i < columns.length; i++) {
-            obj = {};
-            obj[columns[i].name] = row[columns[i].index];
-            console.log(columns[i].name);
-            names.push(obj);
         }
 
-        // console.log(zip);
-        // perform some operation with the data 
-        // ...
-
+        obj = {};
+        for (var i = 0; i < columns.length; i++) {
+            obj[columns[i].name] = row[columns[i].index].trim();
+        }
+        callback(obj);
     })
     // when the end of the CSV document is reached
     .on("end", function() {
-
-        callback(names);
+        // do nothing
     })
     // if any errors occur
     .on("error", function(error) {
@@ -156,11 +147,11 @@ module.exports.dataZip = {
             "index": 32
         }];
         read_file(file_name[0], request.params.zip, columns, function(names) {
-            allNames.push(names);
+            // allNames.push(names);
             // read_file(file_name[1], columns, function(names) {
             //     allNames.push(names);
             // });
-            reply(allNames);
+            reply(names);
         });
     }
 };
@@ -313,11 +304,11 @@ module.exports.dataCounty = {
             "index": 32
         }];
         read_file_county(file_name[0], request.params.county, columns, function(names) {
-            allNames.push(names);
+            // allNames.push(names);
             // read_file(file_name[1], columns, function(names) {
             //     allNames.push(names);
             // });
-            reply(allNames);
+            reply(names);
         });
     }
 };
