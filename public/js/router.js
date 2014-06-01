@@ -13,7 +13,6 @@ define([
         routes: {
             "": "landing",
             "details/:zip": "details",
-            "map/:zip": "map",
             "*invalidRoute": "badRoute"
         },
 
@@ -38,20 +37,6 @@ define([
             detailsModel = new DetailsModel(zip);
             this.currentView = new DetailsView({
                 model: detailsModel
-            });
-            this.currentView.render();
-        },
-
-        map: function(zip) {
-            var mapModel;
-
-            if (this.currentView) {
-                this.currentView.close();
-            }
-
-            mapModel = new MapModel(zip);
-            this.currentView = new MapView({
-                model: mapModel
             });
             this.currentView.render();
         },

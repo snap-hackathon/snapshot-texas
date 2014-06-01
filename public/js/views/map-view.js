@@ -48,8 +48,6 @@ define([
 
     return Backbone.View.extend({
 
-        el: "#main",
-
         template: _.template(mapHtml),
 
         events: {},
