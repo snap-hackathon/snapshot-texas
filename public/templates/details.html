@@ -1,315 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+        <h2><a href="/"><img alt="Texas Food Bank Network" src="/public/images/logoheader.png" /></a></h2>
+    </div>
+  </div>
+</div>
 
-    <!-- Bootstrap core CSS -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700|Open+Sans+Condensed:700,300' rel='stylesheet' type='text/css'>
-    <link href="/public/css/style.css" rel="stylesheet">
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+       <h3>SNAPshot Texas <% if (county && zip) { %><small><strong><%- county %> - <%- zip %></strong></small><% } %></h3>
+    </div>
+    <form class="col-md-4 form-group" style="text-align:right">
+        &nbsp;<br />
+        <label for="zipcode">Find zip code:</label>
+        <input name="zipcode" id="zipcode" type="text" placeholder="<%- zip %>" />
+        <button id="submit-zip" type="submit" class="btn btn-primary btn-xs">Go &raquo;</button>
+    </form>
+  </div>
+</div>
 
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-      <div class="container">
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
         <div class="row">
           <div class="col-md-12">
-              <h2><a href="/"><img alt="Texas Food Bank Network" src="/public/images/logoheader.png" /></a></h2>
-          </div>
-        </div>
-      </div>
-    
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-             <h3>SNAPshot Texas <% if (county && zip) { %><small><strong><%- county %> - <%- zip %></strong></small><% } %></h3>
-          </div>
-          <form>
-            <div class="col-md-4 form-group" style="text-align:right">
-                &nbsp;<br />
-                <label for="zipcode">Find zip code:</label>
-                <input name="zipcode" id="zipcode" type="text" placeholder="<%- zip %>" />
-                <button type="button" class="btn btn-primary btn-xs">Go &raquo;</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-12">
-                  <h3><%- county%> County Information</h3>
-                  <hr />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div id="map"></div>
-                  <hr />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6" style="padding-right:20px; border-right: 1px solid #ccc;">
-                  Cost of a meal is<br/>
-                  <span class="h1">$<%- parseFloat(weightedCostPerMeal).toFixed(2) %></span><br />
-                  <big><strong><%- Math.round((1 - costOfFoodIndex) * 100) %>%</big> <%- costOfFoodIndex < 1 ? 'less' : 'more' %></strong> than the national average.
-                </div>
-                <div class="col-md-6">
-                  <span class="h1"><%- individualFoodInsecurityRate %></span>
-                  of people have experienced <strong>food insecurity</strong> in this county in the last year.</div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <hr />
-                  <span class="h1"><%- childFoodInsecurityRate %></span> of children in<br />
-                  in <%- county %> have experienced <strong>food insecurity in the last year</strong>.<br/>
-                  That's <strong><big><%- foodInsecureChildren %></big> children going hungry</strong>.
-                </div>
-              </div>
-
-          </div>
-          <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-12">
-                  <h3>Constituent Story</h3>
-                  <hr />
-                  <img src="/public/images/placeholder.png" width="25%" align="right" hspace="20" />
-                  <p><!-- TODO -->When I needed snap perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-                  <h4><a href="https://docs.google.com/a/tfbn.org/forms/d/1V7xzLV2D9OgkW7bLUHeYzVqGyg5L103Iq3vGuNq19H4/viewform">Tell us <em>your</em> story!</a><br />&nbsp;</h4>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12 well">
-                  <p><strong>Share this report</strong></p>
-                  <p>
-                      <a href="#"><i class="fa fa-print"></i> Print</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                      <a href="#"><i class="fa fa-envelope"></i> Email</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                      <a href="#"><i class="fa fa-facebook"></i> Facebook</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                      <a href="#"><i class="fa fa-twitter"></i> Twitter</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                      <a href="#"><i class="fa fa-globe"></i> Embed in my website</a>
-                  </p>
-                  <p><a href="#"><i class="fa fa-bullhorn"></i> Create a letter to send to my representative</a></p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <h3>Resources in <%- county %> County</h3>
-                  <hr />
-                  <p><strong><big><a href="http://<%- website %>"><%- foodBank %></a></big></strong><br />
-                  <%- address %><br />
-                  <%- phone %><br />
-                  <a href="http://<%- website %>"><%- website %></a>
-                  </p>
-                </div>
-              </div>
-            </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12" style="text-align:center">
-            <h3>In zipcode <%- zip %>&hellip;</h3>
+            <h3><%- county%> County Information</h3>
             <hr />
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6" style="text-align:center">
+          <div class="col-md-12">
+            <div id="map"></div>
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6" style="padding-right:20px; border-right: 1px solid #ccc;">
+            Cost of a meal is<br/>
+            <span class="h1">$<%- parseFloat(weightedCostPerMeal).toFixed(2) %></span><br />
+            <big><strong><%- Math.round((1 - costOfFoodIndex) * 100) %>%</big> <%- costOfFoodIndex < 1 ? 'less' : 'more' %></strong> than the national average.
+          </div>
+          <div class="col-md-6">
+            <span class="h1"><%- individualFoodInsecurityRate %></span>
+            of people have experienced <strong>food insecurity</strong> in this county in the last year.</div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <hr />
+            <span class="h1"><%- childFoodInsecurityRate %></span> of children in<br />
+            in <%- county %> have experienced <strong>food insecurity in the last year</strong>.<br/>
+            That's <strong><big><%- foodInsecureChildren %></big> children going hungry</strong>.
+          </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Constituent Story</h3>
+            <hr />
+            <img src="/public/images/placeholder.png" width="25%" align="right" hspace="20" />
+            <p><!-- TODO -->When I needed snap perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+            <h4><a href="https://docs.google.com/a/tfbn.org/forms/d/1V7xzLV2D9OgkW7bLUHeYzVqGyg5L103Iq3vGuNq19H4/viewform">Tell us <em>your</em> story!</a><br />&nbsp;</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 well">
+            <p><strong>Share this report</strong></p>
             <p>
-              <strong><big><%- totalIncomeEligibleIndividuals %></big> people</strong> are eligible for SNAP benefits.<br />
-              Of those eligible, <strong><big><%- incomeEligible0To17 %></big> are children</strong>, 
-              <strong><big><%- incomeEligible18To64 %></big> are adults</strong>, and
-              <strong><big><%- incomeEligible65Plus %></big> are seniors</strong>.
-            <div id="percentages" style="width:100%;height:250px"></div>
-          </div>
-          <div class="col-md-6" style="text-align:center">
-            <p>Only <strong><big><%- Math.round(100*(totalSnapRecipients / totalIncomeEligibleIndividuals)) %>%</big></strong> of eligible people are <strong>actually receiving SNAP benefits</strong>.</p>
-            <div id="percentreceiving" style="width:100%;height:250px"></div>
+                <a href="#"><i class="fa fa-print"></i> Print</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#"><i class="fa fa-envelope"></i> Email</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#"><i class="fa fa-facebook"></i> Facebook</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#"><i class="fa fa-twitter"></i> Twitter</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#"><i class="fa fa-globe"></i> Embed in my website</a>
+            </p>
+            <p><a href="#"><i class="fa fa-bullhorn"></i> Create a letter to send to my representative</a></p>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12" style="text-align:center">
-            <p>SNAP only covers <strong><big>$<%- parseFloat(averageMonthlySnapBenefitPerHousehold/90).toFixed(2) %></big> of the <big>$<%- parseFloat(weightedCostPerMeal).toFixed(2) %></big></strong> necessary for each meal.</p>
-            <div id="percentbenefits" style="width:100%;height:250px"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12" style="text-align:center">
-            <h3>Demographics of those receiving SNAP benefits&hellip;</h3>
+          <div class="col-md-12">
+            <h3>Resources in <%- county %> County</h3>
             <hr />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6" style="text-align:center">
-            <p><strong><big>Working vs Non-working Households</big></strong></p>
-            <div id="percentrcvworking" style="width:100%;height:250px"></div>
-          </div>
-          <div class="col-md-6" style="text-align:center">
-            <p><strong><big>By Age</big></strong></p>
-            <div id="percentrcvage" style="width:100%;height:250px"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6" style="text-align:center">
-            <p><strong><big>By Race</big></strong></p>
-            <div id="percentrcvrace" style="width:100%;height:250px"></div>
-          </div>
-          <div class="col-md-6" style="text-align:center">
-            <p><strong><big>By Ethnicity</big></strong></p>
-            <div id="percentrcvethnicity" style="width:100%;height:250px"></div>
+            <p><strong><big><a href="http://<%- website %>"><%- foodBank %></a></big></strong><br />
+            <%- address %><br />
+            <%- phone %><br />
+            <a href="http://<%- website %>"><%- website %></a>
+            </p>
           </div>
         </div>
       </div>
+  </div>
+</div>
 
-      <footer>
-        <p align="center">&copy; Texas Food Bank Network 2014 &mdash; <a href="http://tfbn.org/about/staff-contact/">Contact Us</a></p>
-      </footer>
-    </div> <!-- /container -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <h3>In zipcode <%- zip %>&hellip;</h3>
+      <hr />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" style="text-align:center">
+      <p>
+        <strong><big><%- totalIncomeEligibleIndividuals %></big> people</strong> are eligible for SNAP benefits.<br />
+        Of those eligible, <strong><big><%- incomeEligible0To17 %></big> are children</strong>, 
+        <strong><big><%- incomeEligible18To64 %></big> are adults</strong>, and
+        <strong><big><%- incomeEligible65Plus %></big> are seniors</strong>.
+      <div id="percentages" style="width:100%;height:250px"></div>
+    </div>
+    <div class="col-md-6" style="text-align:center">
+      <p>Only <strong><big><%- Math.round(100*(totalSnapRecipients / totalIncomeEligibleIndividuals)) %>%</big></strong> of eligible people are <strong>actually receiving SNAP benefits</strong>.</p>
+      <div id="percentreceiving" style="width:100%;height:250px"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <p>SNAP only covers <strong><big>$<%- parseFloat(averageMonthlySnapBenefitPerHousehold/90).toFixed(2) %></big> of the <big>$<%- parseFloat(weightedCostPerMeal).toFixed(2) %></big></strong> necessary for each meal.</p>
+      <div id="percentbenefits" style="width:100%;height:250px"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <h3>Demographics of those receiving SNAP benefits&hellip;</h3>
+      <hr />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" style="text-align:center">
+      <p><strong><big>Working vs Non-working Households</big></strong></p>
+      <div id="percentrcvworking" style="width:100%;height:250px"></div>
+    </div>
+    <div class="col-md-6" style="text-align:center">
+      <p><strong><big>By Age</big></strong></p>
+      <div id="percentrcvage" style="width:100%;height:250px"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" style="text-align:center">
+      <p><strong><big>By Race</big></strong></p>
+      <div id="percentrcvrace" style="width:100%;height:250px"></div>
+    </div>
+    <div class="col-md-6" style="text-align:center">
+      <p><strong><big>By Ethnicity</big></strong></p>
+      <div id="percentrcvethnicity" style="width:100%;height:250px"></div>
+    </div>
+  </div>
+</div>
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="//code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
-    <script src="/public/js/lib/highcharts/highcharts.js" type="text/javascript"></script>
-
-    <script type="text/javascript">
-
-$(function () {
-
-    Highcharts.setOptions({
-      colors: ['#f7a35c', '#7cb5ec', '#90ed7d', '#8085e9', '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'],
-      credits: {
-        enabled: false
-      },
-      title: {
-        text: null
-      },
-      tooltip: {
-        enabled: false,
-      },
-      chart: {
-        animation: false,
-        spacing: [ 0, 0, 0, 0 ]
-      },
-      plotOptions: {
-          pie: {
-              size: 150,
-              center: ['50%','50%'],
-              dataLabels: {
-                  enabled: true,
-                  format: '<b>{point.name}</b>: {point.percentage:.1f}%'
-              }
-          }
-      }
-    });
-
-    $('#percenteligible').highcharts({
-        series: [{
-            type: 'pie',
-            data: [
-                ['Eligible', <%- totalIncomeEligibleIndividuals %> ],
-                ['Not Eligible', <%- 1 - totalIncomeEligibleIndividuals %> ]
-            ]
-        }]
-    });
-
-    $('#percentreceiving').highcharts({
-        series: [{
-            type: 'pie',
-            data: [
-                ['Receiving', <%- totalSnapRecipients %> ],
-                ['Not Receiving', <%- totalIncomeEligibleButNotReceiving %> ]
-            ]
-        }]
-    });
-
-    $('#percentages').highcharts({
-        series: [{
-            type: 'pie',
-            data: [
-                ['Children', <%- incomeEligible0To17 + incomeEligibleButNotReceiving0To17 %>],
-                ['Adults', <%- incomeEligible18To64 + incomeEligibleButNotReceiving18To64%>],
-                ['Seniors', <%- incomeEligible65Plus + incomeEligibleButNotReceiving65Plus %>]
-            ]
-        }]
-    });
-
-    $('#percentbenefits').highcharts({
-        series: [{
-            type: 'pie',
-            data: [
-                ['Covered', <%- averageMonthlySnapBenefitPerHousehold/90 %>], // TODO
-                ['Not Covered', <%- weightedCostPerMeal %> ]
-            ]
-        }]
-    });
-
-    $('#percentrcvrace').highcharts({
-        series: [{
-            type: 'pie',
-            data: [
-                ['White', <%- recipientRate_White %>],
-                ['Black', <%- recipientRate_Black %>],
-                ['Native American', <%- recipientRate_NativeAmerican %>],
-                ['Asian', <%- recipientRate_Asian %>],
-                ['Pacific Islander', <%- recipientRate_Pacific_Islander %>],
-                ['Multi-race', <%- recipientRate_Multi_Race %>],
-                ['Unknown/Missing', <%- recipientRate_Unknown_Missing %>]
-            ]
-        }]
-    });
-
-    $('#percentrcvworking').highcharts({
-        series: [{
-            type: 'pie',
-            data: [
-                ['Working', <%- householdIncomeWithEarnedIncome %> ],
-                ['Non-Working', <%- 1 - householdIncomeWithEarnedIncome %>]
-            ]
-        }]
-    });
-
-    $('#percentrcvage').highcharts({
-        series: [{
-            type: 'pie',
-            data: [
-                ['Children', <%- recipients0To17 %>],
-                ['Adults', <%- recipients18To64 %>],
-                ['Seniors', <%- recipients65Plus %>]
-            ]
-        }]
-    });
-
-    $('#percentrcvethnicity').highcharts({
-        series: [{
-            type: 'pie',
-            data: [
-                ['Hispanic', <%- recipientEthnicity_hispanic %>],
-                ['Non-Hispanic', <%- recipientEthnicity_Non_Hispanic %>],
-                ['Unknown/Missing', 0 ] // TODO
-            ]
-        }]
-    });
-});
-</script>
-
-
-  </body>
-</html>
+<footer>
+  <p align="center">&copy; Texas Food Bank Network 2014 &mdash; <a href="http://tfbn.org/about/staff-contact/">Contact Us</a></p>
+</footer>

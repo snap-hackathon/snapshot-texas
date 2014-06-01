@@ -6,7 +6,7 @@ define([
 ], function(Backbone, _, mapHtml) {
     "use strict";
 
-    var latitude, longitude, coordinates;
+    var latitude, longitude, coordinates, mapsIsInitialized;
 
     window.initialize = function() {
         var mapOptions = {
@@ -79,7 +79,12 @@ define([
             longitude = data.longitude;
             coordinates = data.coordinates;
 
-            loadScript();
+            if (mapsIsInitialized) {
+                window.initialize();
+            } else {
+                loadScript();
+                mapsIsInitialized = true;
+            }
             return this;
         }
     });

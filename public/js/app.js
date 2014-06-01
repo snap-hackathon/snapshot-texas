@@ -4,7 +4,9 @@ define([
     "backbone",
     "router",
     // our app requires bootstrap
-    "bootstrap"
+    "bootstrap",
+    // our app requires highcharts
+    "highcharts"
 ], function($, Backbone, Router) {
     "use-strict";
 

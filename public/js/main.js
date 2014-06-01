@@ -5,6 +5,7 @@ require.config({
         "jquery": "lib/jquery-2.0.3",
         "text": "lib/text",
         "bootstrap": "lib/bootstrap",
+        "highcharts": "lib/highcharts/highcharts",
         "details-model": "models/details-model",
         "details-view": "views/details-view",
         "map-model": "models/map-model",
@@ -22,6 +23,10 @@ require.config({
         },
         "bootstrap": {
             deps: ["jquery"]
+        },
+        "highcharts": {
+            deps: ["jquery"],
+            exports: "Highcharts"
         }
     }
 });
