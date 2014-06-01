@@ -31,7 +31,8 @@ define([
         render: function() {
             // render the overview page
             this.$el.html(this.template({
-                zips: []
+                zips: [],
+                county: "Travis"
             }));
             return this;
         },
@@ -64,15 +65,19 @@ define([
         },
 
         renderCountyTable: function() {
-            var zips = [];
+            var zips, county;
+
+            zips = [];
 
             _.each(this.model.toJSON(), function(zip) {
                 if (zip.county) {
                     zips.push(zip);
+                    county = zip.county;
                 }
             });
             this.$el.html(this.template({
-                zips: zips
+                zips: zips,
+                county: county
             }));
             return this;
         }
