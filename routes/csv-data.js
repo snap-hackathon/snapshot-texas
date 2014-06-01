@@ -1,6 +1,7 @@
 "use strict";
 
-var csv = require("csv"),
+var Hapi = require("hapi"),
+    csv = require("csv"),
     async = require("async"),
     extend = require("xtend");
 
@@ -11,6 +12,10 @@ var csv = require("csv"),
 */
 
 function read_file(file_name, itemToMatchValue, itemToMatchIndex, columns, callback) {
+    var found;
+
+    found = false;
+
     csv().from.path(__dirname + "/../Data/" + file_name, {
         delimiter: ",",
         escape: '"'
@@ -30,21 +35,27 @@ function read_file(file_name, itemToMatchValue, itemToMatchIndex, columns, callb
             return;
         }
 
+        found = true;
+
         obj = {};
         for (var i = 0; i < columns.length; i++) {
             value = row[columns[i].index].trim();
             value = value.replace(/\$/, "");
             obj[columns[i].name] = value;
         }
-        callback(obj);
+        callback(null, obj);
     })
     // when the end of the CSV document is reached
     .on("end", function() {
-        // do nothing
+        if (found) {
+            // do nothing
+        } else {
+            callback("Unable to find item");
+        }
     })
     // if any errors occur
     .on("error", function(error) {
-        console.log(error.message);
+        callback(error);
     });
 }
 
@@ -151,12 +162,20 @@ module.exports.dataZip = {
                     "name": "householdncomeWithOnlyEarnedIncome",
                     "index": 32
                 }];
-                read_file(file_name, request.params.zip, 2, columns, function(data) {
-                    waterfallCallback(null, data);
+                read_file(file_name, request.params.zip, 2, columns, function(err, data) {
+                    waterfallCallback(err, data);
                 });
             }
         ], function(err, data) {
-            var county = data.county;
+            var county;
+
+            if (err) {
+                console.error(err);
+                reply(Hapi.error.badImplementation(err));
+                return;
+            }
+
+            county = data.county;
             async.parallel([
                 function(parallelCallback) {
                     var file_name = "Food_Banks.csv";
@@ -173,8 +192,8 @@ module.exports.dataZip = {
                         "name": "website",
                         "index": 4
                     }];
-                    read_file(file_name, county, 0, columns, function(newData) {
-                        parallelCallback(null, newData);
+                    read_file(file_name, county, 0, columns, function(err, newData) {
+                        parallelCallback(err, newData);
                     });
                 },
                 function(parallelCallback) {
@@ -198,12 +217,18 @@ module.exports.dataZip = {
                         "name": "weightedCostPerMeal",
                         "index": 6
                     }];
-                    read_file(file_name, county, 0, columns, function(newData) {
-                        parallelCallback(null, newData);
+                    read_file(file_name, county, 0, columns, function(err, newData) {
+                        parallelCallback(err, newData);
                     });
                 }
             ], function(err, results) {
                 var i;
+
+                if (err) {
+                    console.error(err);
+                    reply(Hapi.error.badImplementation(err));
+                    return;
+                }
 
                 for (i = 0; i < results.length; i++) {
                     data = extend(data, results[i]);
