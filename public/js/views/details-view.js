@@ -175,7 +175,7 @@ define([
                     type: 'pie',
                     data: [
                         ['Working', parseFloat(model.householdIncomeWithEarnedIncome) ],
-                        ['Non-Working', parseFloat(model.householdIncomeWithEarnedIncome) ]
+                        ['Non-Working', 1 - parseFloat(model.householdIncomeWithEarnedIncome) ]
                     ]
                 }]
             });
