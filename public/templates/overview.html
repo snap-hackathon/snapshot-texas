@@ -37,6 +37,27 @@
             <strong>Just like you and me.</strong></p>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Find most in-need areas by county</h3>
+            <form class="form-group">
+             &nbsp;<br />
+              <label for="county">Enter county:</label>
+              <input name="county" id="county" type="text" placeholder="Travis" />
+              <button id="submit-county" type="submit" class="btn btn-primary btn-xs">Go &raquo;</button>
+            </form>
+            <table class="table table-striped" style="width:330px">
+              <thead>
+                <tr><th width="50%">Zip Code</th><th width="50%" style="text-align:right">Eligible but not Participating</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><a href="/app/details/78704">78704</a></td><td align="right">3,000</td></tr>
+                <tr><td><a href="/app/details/78681">78681</a></td><td align="right">2,000</td></tr>
+                <tr><td><a href="/app/details/75770">75770</a></td><td align="right">1,000</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
     </div>
     <div class="col-md-6">
         <div class="row">
@@ -46,7 +67,7 @@
               what average meals cost, what SNAP covers, plus eligibility and participation statistics.
             </p>
             <hr />
-            <h3>Neediest areas of Texas</h3>
+            <h3>Most in-need areas of Texas</h3>
             <img src="/public/images/texas_overview.jpg" />
           </div>
         </div>
