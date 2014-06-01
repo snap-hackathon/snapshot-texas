@@ -44,7 +44,7 @@ define([
             this.$el.html(this.template(this.model.toJSON()));
 
             // add the map view
-            $("#map").append(this.mapView.render().el);
+            $("#map").append(this.mapView.$el);
 
             return this;
         }

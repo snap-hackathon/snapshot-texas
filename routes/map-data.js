@@ -6,7 +6,6 @@ var Hapi = require("hapi"),
 function parseCoordinates(data) {
     var coords, start, end, i, isLat, lat, lon;
 
-    console.log(data);
     coords = [];
 
     start = "<coordinates>";
