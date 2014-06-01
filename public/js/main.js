@@ -6,6 +6,7 @@ require.config({
         "text": "lib/text",
         "bootstrap": "lib/bootstrap",
         "highcharts": "lib/highcharts/highcharts",
+        "overview-view": "views/overview-view",
         "details-model": "models/details-model",
         "details-view": "views/details-view",
         "map-model": "models/map-model",

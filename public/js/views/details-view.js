@@ -44,9 +44,7 @@ define([
 
         renderDetails: function() {
             // render the details page
-            this.$el.html(this.template(_.extend(this.model.toJSON(), {
-                Highcharts: Highcharts
-            })));
+            this.$el.html(this.template(this.model.toJSON()));
 
             // set the highchart data
             this.highchartsConfig();
