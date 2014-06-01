@@ -9,7 +9,9 @@
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
     <!-- Bootstrap core CSS -->
-    <link href="/public/css/bootstrap.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -22,11 +24,8 @@
 
       <div class="container">
         <div class="row">
-          <div class="col-md-8">
-              <h2><a href="/">Texas Food Bank Network</a></h2>
-          </div>
-          <div class="col-md-4">
-            <a href="http://tfbn.org/about/staff-contact/">Contact Us</a>
+          <div class="col-md-12">
+              <h2><a href="/"><img alt="Texas Food Bank Network" src="/public/images/logoheader.png" /></a></h2>
           </div>
         </div>
       </div>
@@ -34,17 +33,16 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8">
-             <h3>Feeding Texas - %zipcode% - %county% County</h3>
+             <h3>Feeding Texas - <%- zip %></h3>
           </div>
-          <div class="col-md-4">
-            <form>
-              <div class="form-group">
-                <label for="zipcode">Zip code:</label>
-                <input name="zipcode" id="zipcode" type="text" placeholder="78701" />
+          <form>
+            <div class="col-md-4 form-group">
+                &nbsp;<br />
+                <label for="zipcode">Find zip code:</label>
+                <input name="zipcode" id="zipcode" type="text" placeholder="<%- zip %>" />
                 <button type="button" class="btn btn-primary btn-xs">Go &raquo;</button>
-              </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
 
@@ -53,7 +51,7 @@
           <div class="col-md-6">
               <div class="row">
                 <div class="col-md-12">
-                  <h3>%county% County Information</h3>
+                  <h3><%- county%> County Information</h3>
                   <hr />
                 </div>
               </div>
@@ -87,6 +85,18 @@
           </div>
           <div class="col-md-6">
               <div class="row">
+                <div class="col-md-12 well">
+                  <p><strong>Share this report</strong></p>
+                  <p>
+                      <a href="#"><i class="fa fa-envelope"></i> Email</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                      <a href="#"><i class="fa fa-facebook"></i> Facebook</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                      <a href="#"><i class="fa fa-twitter"></i> Twitter</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                      <a href="#"><i class="fa fa-globe"></i> Embed in my website</a>
+                  </p>
+                  <p><a href="#"><i class="fa fa-bullhorn"></i> Create a letter to send to my representative</a></p>
+                </div>
+              </div>
+              <div class="row">
                 <div class="col-md-12">
                   <h3>Constituent Story</h3>
                   <hr />
@@ -97,7 +107,7 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <h3>Resources in %county% County</h3>
+                  <h3>Resources in <%- county %> County</h3>
                   <hr />
                   <ul>
                     <li><a href="">Resource one</a></li>
@@ -114,23 +124,23 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h3>In %zipcode%&hellip;</h3>
+            <h3>In zipcode <%- zip %>&hellip;</h3>
             <hr />
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <p>Of %totalresidents%, %eligibleresidents% are eligible for SNAP benefits.</p>
+            <p>Of %totalresidents%, <%- totalIncomeEligibleIndividuals %> are eligible for SNAP benefits.</p>
             <div id="percenteligible" style="width:100%;height:250px"></div>
           </div>
           <div class="col-md-6">
-            <p>Of those %pcteligible%, %eligiblechildren% are children, %eligibleadults% are adults, %eligibleseniors% are seniors."
+            <p>Of those eligible, <%- incomeEligible0To17 %> are children, <%- incomeEligible18To64 %> are adults, <%- incomeEligible65 %> are seniors."
             <div id="percentages" style="width:100%;height:250px"></div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <p>Only %pctreceving% of eligible people are actually receiving SNAP beenefits.</p>
+            <p>Only <%- totalSnapRecipients / totalIncomeEligibleIndividuals %> of eligible people are actually receiving SNAP beenefits.</p>
             <div id="percentreceiving" style="width:100%;height:250px"></div>
           </div>
           <div class="col-md-6">
@@ -162,7 +172,7 @@
       </div>
 
       <footer>
-        <p>&copy; Texas Food Bank Network 2014</p>
+        <p align="center">&copy; Texas Food Bank Network 2014 &mdash; <a href="http://tfbn.org/about/staff-contact/">Contact Us</a></p>
       </footer>
     </div> <!-- /container -->
 
@@ -170,9 +180,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/public/js/lib/bootstrap.js"></script>
-    <script src="/public/js/lib/jquery-2.0.3.js"></script>
-    <script src="/public/js/lib/highcharts/highcharts.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="/public/js/lib/highcharts/highcharts.js" type="text/javascript"></script>
 
     <script type="text/javascript">
 
@@ -209,8 +219,8 @@ $(function () {
         series: [{
             type: 'pie',
             data: [
-                ['Eligible', 20],
-                ['Not Eligible', 80]
+                ['Eligible', <%- totalIncomeEligibleIndividuals %> ],
+                ['Not Eligible', 0 ]
             ]
         }]
     });
@@ -219,8 +229,8 @@ $(function () {
         series: [{
             type: 'pie',
             data: [
-                ['Receiving', 10],
-                ['Not Receiving', 90]
+                ['Receiving', <%- totalSnapRecipients %> ],
+                ['Not Receiving', <%- totalIncomeEligibleButNotReceiving %> ]
             ]
         }]
     });
@@ -229,9 +239,9 @@ $(function () {
         series: [{
             type: 'pie',
             data: [
-                ['Children', 10],
-                ['Adults', 70],
-                ['Seniors', 20]
+                ['Children', <%- incomeEligible0To17 + incomeEligibleButNotReceiving0To17 %>],
+                ['Adults', <%- incomeEligible18To64 + incomeEligibleButNotReceiving18To64%>],
+                ['Seniors', <%- incomeEligible65 + incomeEligibleButNotReceiving65 %>]
             ]
         }]
     });
