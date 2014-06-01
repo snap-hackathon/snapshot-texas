@@ -64,21 +64,21 @@
               <div class="row">
                 <div class="col-md-6" style="padding-right:20px; border-right: 1px solid #ccc;">
                   Cost of a meal is<br/>
-                  <span class="h1">$%mealcost%</span><br />
-                  <strong>+%mealcostpct%</strong> less/more than the national average.
+                  <span class="h1"><!--TODO-->$%mealcost%</span><br />
+                  <strong><!--TODO-->+%mealcostpct%</strong> less/more than the national average.
                 </div>
                 <div class="col-md-6">
-                  <span class="h1">%pctinsecurity%%</span>
+                  <span class="h1"><!--TODO-->%pctinsecurity%%</span>
                   of families have experienced <strong>food insecurity</strong> in this county in the last year.</div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <hr />
-                  <span class="h1">%pctcountychildren%</span><span class="h3">children in</span><br />
-                  in %county% have experienced
+                  <span class="h1"><!--TODO-->%pctcountychildren%</span><span class="h3">children in</span><br />
+                  in <%- county %> have experienced
                   food insecurity<br /> 
                   in the last year. </p>
-                  <p>That's <strong>%countcountychildren%</strong> children going hungry.</p>
+                  <p>That's <strong><!--TODO-->%countcountychildren%</strong> children going hungry.</p>
                 </div>
               </div>
 
@@ -101,7 +101,7 @@
                   <h3>Constituent Story</h3>
                   <hr />
                   <img src="/public/images/placeholder.png" width="25%" align="right" />
-                  <p>When I needed snap perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                  <p><!-- TODO -->When I needed snap perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
                   <h4><a href="submityourstory">Tell us <em>your</em> story!</a></h4>
                 </div>
               </div>
@@ -110,7 +110,7 @@
                   <h3>Resources in <%- county %> County</h3>
                   <hr />
                   <ul>
-                    <li><a href="">Resource one</a></li>
+                    <li><!-- TODO --><a href="">Resource one</a></li>
                     <li><a href="">Resource two</a></li>
                     <li><a href="">Resource three</a></li>
                     <li><a href="">Resource four</a></li>
@@ -123,35 +123,35 @@
 
       <div class="container">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12" style="text-align:center">
             <h3>In zipcode <%- zip %>&hellip;</h3>
             <hr />
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
-            <p>Of %totalresidents%, <%- totalIncomeEligibleIndividuals %> are eligible for SNAP benefits.</p>
-            <div id="percenteligible" style="width:100%;height:250px"></div>
-          </div>
-          <div class="col-md-6">
-            <p>Of those eligible, <%- incomeEligible0To17 %> are children, <%- incomeEligible18To64 %> are adults, <%- incomeEligible65Plus %> are seniors."
+          <div class="col-md-6" style="text-align:center">
+            <p>
+              <%- totalIncomeEligibleIndividuals %> are eligible for SNAP benefits.<br />
+              Of those eligible, <%- incomeEligible0To17 %> are children, 
+              <%- incomeEligible18To64 %> are adults, and
+              <%- incomeEligible65Plus %> are seniors.
             <div id="percentages" style="width:100%;height:250px"></div>
+          </div>
+          <div class="col-md-6" style="text-align:center">
+            <p>Only <%- Math.round(100*(totalSnapRecipients / totalIncomeEligibleIndividuals)) %>% of eligible people are actually receiving SNAP benefits.</p>
+            <div id="percentreceiving" style="width:100%;height:250px"></div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
-            <p>Only <%- Math.round(100*(totalSnapRecipients / totalIncomeEligibleIndividuals)) %>% of eligible people are actually receiving SNAP beenefits.</p>
-            <div id="percentreceiving" style="width:100%;height:250px"></div>
-          </div>
-          <div class="col-md-6">
-            <p>SNAP only covers $%benefitpermeal% of the $%mealcost% necessary for meal per day.</p>
+          <div class="col-md-12" style="text-align:center">
+            <p><!-- TODO -->SNAP only covers $%benefitpermeal% of the $%mealcost% necessary for meal per day.</p>
             <div id="percentbenefits" style="width:100%;height:250px"></div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
-            <p>Of those receiving SNAP benefits:</p>
-          </ddiv>
+          <div class="col-md-12" style="text-align:center">
+            <h3>Of those receiving SNAP benefits&hellip;</h3>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -220,7 +220,7 @@ $(function () {
             type: 'pie',
             data: [
                 ['Eligible', <%- totalIncomeEligibleIndividuals %> ],
-                ['Not Eligible', 0 ] // TODO
+                ['Not Eligible', <%- 1 - totalIncomeEligibleIndividuals %> ]
             ]
         }]
     });
@@ -250,8 +250,8 @@ $(function () {
         series: [{
             type: 'pie',
             data: [
-                ['Covered', 1.23],
-                ['Not Covered', 2.49]
+                ['Covered', 1.23], // TODO
+                ['Not Covered', 2.49] // TODO
             ]
         }]
     });
