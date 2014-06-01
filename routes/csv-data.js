@@ -74,7 +74,7 @@ module.exports.dataZip = {
             "name": "recipients18To64",
             "index": 8
         }, {
-            "name": "recipients65+",
+            "name": "recipients65Plus",
             "index": 9
         }, {
             "name": "totalIncomeEligibleIndividuals",
@@ -86,7 +86,7 @@ module.exports.dataZip = {
             "name": "incomeEligible18To64",
             "index": 12
         }, {
-            "name": "incomeEligible65+",
+            "name": "incomeEligible65Plus",
             "index": 13
         }, {
             "name": "totalIncomeEligibleButNotReceiving",
@@ -98,7 +98,7 @@ module.exports.dataZip = {
             "name": "incomeEligibleButNotReceiving18To64",
             "index": 16
         }, {
-            "name": "incomeEligibleButNotReceiving65+",
+            "name": "incomeEligibleButNotReceiving65Plus",
             "index": 17
         }, {
             "name": "totalParticipationRate",
@@ -110,7 +110,7 @@ module.exports.dataZip = {
             "name": "participationRate18To64",
             "index": 20
         }, {
-            "name": "participationRate65+",
+            "name": "participationRate65Plus",
             "index": 21
         }, {
             "name": "recipientRate_NativeAmerican",
@@ -231,7 +231,7 @@ module.exports.dataCounty = {
             "name": "recipients18To64",
             "index": 8
         }, {
-            "name": "recipients65+",
+            "name": "recipients65Plus",
             "index": 9
         }, {
             "name": "totalIncomeEligibleIndividuals",
@@ -243,7 +243,7 @@ module.exports.dataCounty = {
             "name": "incomeEligible18To64",
             "index": 12
         }, {
-            "name": "incomeEligible65+",
+            "name": "incomeEligible65Plus",
             "index": 13
         }, {
             "name": "totalIncomeEligibleButNotReceiving",
@@ -255,7 +255,7 @@ module.exports.dataCounty = {
             "name": "incomeEligibleButNotReceiving18To64",
             "index": 16
         }, {
-            "name": "incomeEligibleButNotReceiving65+",
+            "name": "incomeEligibleButNotReceiving65Plus",
             "index": 17
         }, {
             "name": "totalParticipationRate",
@@ -267,7 +267,7 @@ module.exports.dataCounty = {
             "name": "participationRate18To64",
             "index": 20
         }, {
-            "name": "participationRate65+",
+            "name": "participationRate65Plus",
             "index": 21
         }, {
             "name": "recipientRate_NativeAmerican",
