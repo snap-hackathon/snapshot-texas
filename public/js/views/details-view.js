@@ -15,6 +15,7 @@ define([
         events: {},
 
         initialize: function() {
+            this.model.on("sync", this.renderDetails, this);
         },
 
         close: function() {
@@ -24,7 +25,14 @@ define([
         },
 
         render: function() {
-            this.$el.html(this.template());
+            // render nothing, just fetch the model
+            this.model.fetch();
+
+            return this;
+        },
+
+        renderDetails: function() {
+            this.$el.html(this.template(this.model.toJSON()));
             return this;
         }
     });
