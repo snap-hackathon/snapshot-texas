@@ -11,6 +11,8 @@
     <!-- Bootstrap core CSS -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700|Open+Sans+Condensed:700,300' rel='stylesheet' type='text/css'>
+    <link href="/public/css/style.css" rel="stylesheet">
 
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -69,15 +71,14 @@
                 </div>
                 <div class="col-md-6">
                   <span class="h1"><%- individualFoodInsecurityRate %></span>
-                  of people have <strong>experienced <big>food insecurity</big></strong> in this county in the last year.</div>
+                  of people have experienced <strong>food insecurity</strong> in this county in the last year.</div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <hr />
-                  <span class="h1"><%- childFoodInsecurityRate %></span><span class="h3">children in</span><br />
-                  in <%- county %> have experienced
-                  <big><strong>food insecurity</big> in the last year</strong>.</p>
-                  <p>That's <strong><big><%- foodInsecureChildren %></big> children going hungry</strong>.</p>
+                  <span class="h1"><%- childFoodInsecurityRate %></span> of children in<br />
+                  in <%- county %> have experienced <strong>food insecurity in the last year</strong>.<br/>
+                  That's <strong><big><%- foodInsecureChildren %></big> children going hungry</strong>.
                 </div>
               </div>
 
@@ -143,7 +144,7 @@
         </div>
         <div class="row">
           <div class="col-md-12" style="text-align:center">
-            <p>SNAP only covers <strong><big>$<%- parseFloat(averageMonthlySnapBenefitPerHousehold/90).toFixed(2) %></big> of the $<%- parseFloat(weightedCostPerMeal).toFixed(2) %></strong> necessary for each meal.</p>
+            <p>SNAP only covers <strong><big>$<%- parseFloat(averageMonthlySnapBenefitPerHousehold/90).toFixed(2) %></big> of the <big>$<%- parseFloat(weightedCostPerMeal).toFixed(2) %></big></strong> necessary for each meal.</p>
             <div id="percentbenefits" style="width:100%;height:250px"></div>
           </div>
         </div>
