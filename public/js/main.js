@@ -6,6 +6,8 @@ require.config({
         "text": "lib/text",
         "bootstrap": "lib/bootstrap",
         "details-view": "views/details-view",
+        "map-model": "models/map-model",
+        "map-view": "views/map-view",
         "router": "router",
         "app": "app"
     },

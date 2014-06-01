@@ -2,14 +2,17 @@
 define([
     "backbone",
     "jquery",
-    "details-view"
-], function(Backbone, $, DetailsView) {
+    "details-view",
+    "map-model",
+    "map-view"
+], function(Backbone, $, DetailsView, MapModel, MapView) {
     "use strict";
 
     var Router = Backbone.Router.extend({
         routes: {
             "": "landing",
             "details": "details",
+            "map/:zip": "map",
             "*invalidRoute": "badRoute"
         },
 
@@ -29,6 +32,20 @@ define([
             }
 
             this.currentView = new DetailsView();
+            this.currentView.render();
+        },
+
+        map: function(zip) {
+            var mapModel;
+
+            if (this.currentView) {
+                this.currentView.close();
+            }
+
+            mapModel = new MapModel(zip);
+            this.currentView = new MapView({
+                model: mapModel
+            });
             this.currentView.render();
         },
 
