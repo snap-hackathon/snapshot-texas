@@ -136,8 +136,8 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Covered', parseFloat(model.averageMonthlySnapBenefitPerHousehold) / 90 ], // TODO
-                        ['Not Covered', parseFloat(model.weightedCostPerMeal) ]
+                        ['Covered', parseFloat(model.averageBenefitperMeal) ],
+                        ['Not Covered', parseFloat(model.weightedCostPerMeal)-parseFloat(model.averageBenefitperMeal) ]
                     ]
                 }]
             });
