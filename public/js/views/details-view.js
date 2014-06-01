@@ -107,8 +107,8 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Eligible', model.totalIncomeEligibleIndividuals ],
-                        ['Not Eligible', model.totalIncomeEligibleIndividuals ]
+                        ['Eligible', parseFloat(model.totalIncomeEligibleIndividuals) ],
+                        ['Not Eligible', parseFloat(model.totalIncomeEligibleIndividuals) ]
                     ]
                 }]
             });
@@ -117,8 +117,8 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Receiving', (+model.totalSnapRecipients) ],
-                        ['Not Receiving', (+model.totalIncomeEligibleButNotReceiving) ]
+                        ['Receiving', parseFloat(model.totalSnapRecipients) ],
+                        ['Not Receiving', parseFloat(model.totalIncomeEligibleButNotReceiving) ]
                     ]
                 }]
             });
@@ -127,9 +127,9 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Children', (+model.incomeEligible0To17) + (+model.incomeEligibleButNotReceiving0To17) ],
-                        ['Adults', (+model.incomeEligible18To64) + (+model.incomeEligibleButNotReceiving18To64) ],
-                        ['Seniors', (+model.incomeEligible65Plus) + (+model.incomeEligibleButNotReceiving65Plus) ]
+                        ['Children', parseFloat(model.incomeEligible0To17) + parseFloat(model.incomeEligibleButNotReceiving0To17) ],
+                        ['Adults', parseFloat(model.incomeEligible18To64) + parseFloat(model.incomeEligibleButNotReceiving18To64) ],
+                        ['Seniors', parseFloat(model.incomeEligible65Plus) + parseFloat(model.incomeEligibleButNotReceiving65Plus) ]
                     ]
                 }]
             });
@@ -138,8 +138,8 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Covered', (+model.averageMonthlySnapBenefitPerHousehold) / 90 ], // TODO
-                        ['Not Covered', (+model.weightedCostPerMeal) ]
+                        ['Covered', parseFloat(model.averageMonthlySnapBenefitPerHousehold) / 90 ], // TODO
+                        ['Not Covered', parseFloat(model.weightedCostPerMeal) ]
                     ]
                 }]
             });
@@ -148,13 +148,13 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['White', (+model.recipientRate_White) ],
-                        ['Black', (+model.recipientRate_Black) ],
-                        ['Native American', (+model.recipientRate_NativeAmerican) ],
-                        ['Asian', (+model.recipientRate_Asian) ],
-                        ['Pacific Islander', (+model.recipientRate_Pacific_Islander) ],
-                        ['Multi-race', (+model.recipientRate_Multi_Race) ],
-                        ['Unknown/Missing', (+model.recipientRate_Unknown_Missing) ]
+                        ['White', parseFloat(model.recipientRace_White) ],
+                        ['Black', parseFloat(model.recipientRace_Black) ],
+                        ['Native American', parseFloat(model.recipientRace_NativeAmerican) ],
+                        ['Asian', parseFloat(model.recipientRace_Asian) ],
+                        ['Pacific Islander', parseFloat(model.recipientRace_Pacific_Islander) ],
+                        ['Multi-race', parseFloat(model.recipientRace_Multi_Race) ],
+                        ['Unknown/Missing', parseFloat(model.recipientRace_Unknown_Missing) ]
                     ]
                 }]
             });
@@ -163,8 +163,8 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Working', (+model.householdIncomeWithEarnedIncome) ],
-                        ['Non-Working', (+model.householdIncomeWithEarnedIncome) ]
+                        ['Working', parseFloat(model.householdIncomeWithEarnedIncome) ],
+                        ['Non-Working', parseFloat(model.householdIncomeWithEarnedIncome) ]
                     ]
                 }]
             });
@@ -173,9 +173,9 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Children', (+model.recipients0To17) ],
-                        ['Adults', (+model.recipients18To64) ],
-                        ['Seniors', (+model.recipients65Plus) ]
+                        ['Children', parseFloat(model.recipients0To17) ],
+                        ['Adults', parseFloat(model.recipients18To64) ],
+                        ['Seniors', parseFloat(model.recipients65Plus) ]
                     ]
                 }]
             });
@@ -184,9 +184,9 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Hispanic', (+model.recipientEthnicity_hispanic) ],
-                        ['Non-Hispanic', (+model.recipientEthnicity_Non_Hispanic) ],
-                        ['Unknown/Missing', 0] // TODO
+                        ['Hispanic', parseFloat(model.recipientEthnicity_hispanic) ],
+                        ['Non-Hispanic', parseFloat(model.recipientEthnicity_Non_Hispanic) ],
+                        ['Unknown/Missing', parseFloat(model.recipientEthnicity_Unknown_Missing) ]
                     ]
                 }]
             });
