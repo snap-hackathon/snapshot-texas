@@ -5,6 +5,7 @@ require.config({
         "jquery": "lib/jquery-2.0.3",
         "text": "lib/text",
         "bootstrap": "lib/bootstrap",
+        "details-model": "models/details-model",
         "details-view": "views/details-view",
         "map-model": "models/map-model",
         "map-view": "views/map-view",

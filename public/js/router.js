@@ -2,16 +2,17 @@
 define([
     "backbone",
     "jquery",
+    "details-model",
     "details-view",
     "map-model",
     "map-view"
-], function(Backbone, $, DetailsView, MapModel, MapView) {
+], function(Backbone, $, DetailsModel, DetailsView, MapModel, MapView) {
     "use strict";
 
     var Router = Backbone.Router.extend({
         routes: {
             "": "landing",
-            "details": "details",
+            "details/:zip": "details",
             "map/:zip": "map",
             "*invalidRoute": "badRoute"
         },
@@ -21,17 +22,23 @@ define([
         },
 
         landing: function() {
-            Backbone.history.navigate("details", {
+            // default them to 78704
+            Backbone.history.navigate("details/78704", {
                 trigger: true
             });
         },
 
-        details: function() {
+        details: function(zip) {
+            var detailsModel;
+
             if (this.currentView) {
                 this.currentView.close();
             }
 
-            this.currentView = new DetailsView();
+            detailsModel = new DetailsModel(zip);
+            this.currentView = new DetailsView({
+                model: detailsModel
+            });
             this.currentView.render();
         },
 
