@@ -17,7 +17,7 @@ function read_file(file_name, itemToMatchValue, itemToMatchIndex, columns, callb
     })
     // when a record is found in the CSV file (a row)
     .on("record", function(row, index) {
-        var item, obj;
+        var item, value, obj;
 
         // skip the header row
         if (index === 0) {
@@ -32,7 +32,9 @@ function read_file(file_name, itemToMatchValue, itemToMatchIndex, columns, callb
 
         obj = {};
         for (var i = 0; i < columns.length; i++) {
-            obj[columns[i].name] = row[columns[i].index].trim();
+            value = row[columns[i].index].trim();
+            value = value.replace(/\$/, "");
+            obj[columns[i].name] = value;
         }
         callback(obj);
     })
