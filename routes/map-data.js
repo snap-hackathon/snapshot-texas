@@ -51,7 +51,7 @@ function parseMapData(zip, callback) {
 
     found = false;
 
-    csv().from.path(__dirname + "/../Data/US_ZIP_codes.csv", {
+    csv().from.path(__dirname + "/../csv/US_ZIP_codes.csv", {
         delimiter: ",",
         escape: '"'
     })

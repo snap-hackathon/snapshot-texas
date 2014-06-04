@@ -1,323 +1,84 @@
 "use strict";
 
-var csv = require("csv"),
+var Hapi = require("hapi"),
+    csv = require("csv"),
     async = require("async"),
-    extend = require("xtend");
+    extend = require("xtend"),
+    csvContents = require("../csv/contents.json");
 
-function read_file(file_name, itemToMatchValue, itemToMatchIndex, columns, callback) {
-    csv().from.path(__dirname + "/../Data/" + file_name, {
+function readFile(fileName, rowToMatchItemValue, rowToMatchItemIndex, columns, matchAll, callback) {
+    var foundRow, allMatches;
+
+    foundRow = false;
+
+    // used if we're matching on multiple rows
+    allMatches = [];
+
+    csv().from.path(__dirname + "/../csv/" + fileName, {
         delimiter: ",",
         escape: '"'
     })
     // when a record is found in the CSV file (a row)
     .on("record", function(row, index) {
-        var item, value, obj;
+        var item, value, rowValues;
 
         // skip the header row
         if (index === 0) {
             return;
         }
 
-        item = row[itemToMatchIndex].trim();
-        if (item !== itemToMatchValue) {
-            // skip it, not our zip
+        item = row[rowToMatchItemIndex].trim();
+        if (item.toLowerCase() !== rowToMatchItemValue.toLowerCase()) {
+            // skip it, not our item
             return;
         }
 
-        obj = {};
+        // if we got here, we found the right row
+        foundRow = true;
+
+        // grab the row values in our object
+        rowValues = {};
         for (var i = 0; i < columns.length; i++) {
             value = row[columns[i].index].trim();
             value = value.replace(/\$/, "");
             value = value.replace(/\#/, "");
-            obj[columns[i].name] = value;
+            rowValues[columns[i].name] = value;
         }
-        callback(obj);
+
+        // if we match all rows that have our item to match, then
+        // we keep looking. If not, and we're only matching on the
+        // first occurrance, we stop here and return
+        if (matchAll) {
+            // add this rowValues to our matches
+            allMatches.push(rowValues);
+        } else {
+            // we're done, no errors
+            callback(null, rowValues);
+        }
     })
     // when the end of the CSV document is reached
     .on("end", function() {
-        // do nothing
-    })
-    // if any errors occur
-    .on("error", function(error) {
-        console.log(error.message);
-    });
-}
-
-module.exports.dataZip = {
-    handler: function(request, reply) {
-
-        async.waterfall([
-            function(waterfallCallback) {
-                async.parallel([
-                    function(parallelCallback) {
-                        var file_name = "SNAP_Particpation_and_Race_Merged.csv";
-
-                        var columns = [{
-                            "name": "zip",
-                            "index": 2
-                        }, {
-                            "name": "county",
-                            "index": 0
-                        }, {
-                            "name": "totalSnapHouseholds",
-                            "index": 3
-                        }, {
-                            "name": "averageMonthlySnapBenefitPerHousehold",
-                            "index": 4
-
-                        }, {
-                            "name": "totalBenefits",
-                            "index": 5
-                        }, {
-                            "name": "totalSnapRecipients",
-                            "index": 6
-                        }, {
-                            "name": "recipients0To17",
-                            "index": 7
-                        }, {
-                            "name": "recipients18To64",
-                            "index": 8
-                        }, {
-                            "name": "recipients65Plus",
-                            "index": 9
-                        }, {
-                            "name": "totalIncomeEligibleIndividuals",
-                            "index": 10
-                        }, {
-                            "name": "incomeEligible0To17",
-                            "index": 11
-                        }, {
-                            "name": "incomeEligible18To64",
-                            "index": 12
-                        }, {
-                            "name": "incomeEligible65Plus",
-                            "index": 13
-                        }, {
-                            "name": "totalIncomeEligibleButNotReceiving",
-                            "index": 14
-                        }, {
-                            "name": "incomeEligibleButNotReceiving0To17",
-                            "index": 15
-                        }, {
-                            "name": "incomeEligibleButNotReceiving18To64",
-                            "index": 16
-                        }, {
-                            "name": "incomeEligibleButNotReceiving65Plus",
-                            "index": 17
-                        }, {
-                            "name": "totalParticipationRate",
-                            "index": 18
-                        }, {
-                            "name": "participationRate0To17",
-                            "index": 19
-                        }, {
-                            "name": "participationRate18To64",
-                            "index": 20
-                        }, {
-                            "name": "participationRate65Plus",
-                            "index": 21
-                        }, {
-                            "name": "recipientRace_NativeAmerican",
-                            "index": 22
-                        }, {
-                            "name": "recipientRace_Asian",
-                            "index": 23
-                        }, {
-                            "name": "recipientRace_Black",
-                            "index": 24
-                        }, {
-                            "name": "recipientRace_Pacific_Islander",
-                            "index": 25
-                        }, {
-                            "name": "recipientRace_White",
-                            "index": 26
-                        }, {
-                            "name": "recipientRace_Multi_Race",
-                            "index": 27
-                        }, {
-                            "name": "recipientRace_Unknown_Missing",
-                            "index": 28
-                        }, {
-                            "name": "recipientEthnicity_hispanic",
-                            "index": 29
-                        }, {
-                            "name": "recipientEthnicity_Non_Hispanic",
-                            "index": 30
-                        }, {
-                            "name": "recipientEthnicity_Unknown_Missing",
-                            "index": 31
-                        }, {
-                            "name": "householdIncomeWithEarnedIncome",
-                            "index": 32
-                        }, {
-                            "name": "householdncomeWithOnlyEarnedIncome",
-                            "index": 33
-                        }];
-                        read_file(file_name, request.params.zip, 2, columns, function(data) {
-                            parallelCallback(null, data);
-                        });
-                    },
-                    function(parallelCallback) {
-                        var file_name = "SNAP_Eligibility_vs_Participation_plus_SNAP_meals.csv";
-                        var columns = [{
-                            "name": "averageBenefitPerRecipient",
-                            "index": 7,
-                        }, {
-                            "name": "averageBenefitperMeal",
-                            "index": 8
-                        }];
-
-                        read_file(file_name, request.params.zip, 2, columns, function(data) {
-                            parallelCallback(null, data);
-                        });
-
-                    }
-                ], function(err, results) {
-                    var data = {};
-
-                    for (var i = 0; i < results.length; i++) {
-                        data = extend(data, results[i]);
-                    }
-
-                    waterfallCallback(null, data);
-                    // the results array will equal ['one','two'] even though
-                    // the second function had a shorter timeout.
-                });
-
+        if (foundRow) {
+            if (matchAll) {
+                // return all our matches
+                callback(null, allMatches);
+            } else {
+                // do nothing, we've already returned
             }
-        ], function(err, data) {
-            var county = data.county;
-            async.parallel([
-                function(parallelCallback) {
-                    var file_name = "Food_Banks.csv";
-                    var columns = [{
-                        "name": "foodBank",
-                        "index": 1
-                    }, {
-                        "name": "address",
-                        "index": 2
-                    }, {
-                        "name": "phone",
-                        "index": 3
-                    }, {
-                        "name": "website",
-                        "index": 4
-                    }];
-                    read_file(file_name, county, 0, columns, function(newData) {
-                        parallelCallback(null, newData);
-                    });
-                },
-                function(parallelCallback) {
-                    var file_name = "Food_Insecurity.csv";
-                    var columns = [{
-                        "name": "individualFoodInsecurityRate",
-                        "index": 1
-                    }, {
-                        "name": "foodInsecureIndividuals",
-                        "index": 2
-                    }, {
-                        "name": "childFoodInsecurityRate",
-                        "index": 3
-                    }, {
-                        "name": "foodInsecureChildren",
-                        "index": 4
-                    }, {
-                        "name": "costOfFoodIndex",
-                        "index": 5
-                    }, {
-                        "name": "weightedCostPerMeal",
-                        "index": 6
-                    }];
-                    read_file(file_name, county, 0, columns, function(newData) {
-                        parallelCallback(null, newData);
-                    });
-                }
-            ], function(err, results) {
-                var i;
-
-                for (i = 0; i < results.length; i++) {
-                    data = extend(data, results[i]);
-                }
-
-                reply(data);
+        } else {
+            callback({
+                code: 404,
+                message: "Unable to find data for " + rowToMatchItemValue
             });
-        });
-    }
-};
-
-
-function read_file_county(file_name, county, columns, callback) {
-    var countyData = [];
-
-    csv().from.path(__dirname + "/../Data/" + file_name, {
-        delimiter: ",",
-        escape: '"'
-    })
-    // when a record is found in the CSV file (a row)
-    .on("record", function(row, index) {
-        var item, obj, value, i;
-
-        // skip the header row
-        if (index === 0) {
-            return;
         }
-
-        // get item needed to match it to itemtomatchvalue
-        item = row[0].trim();
-        if (item.toLowerCase() !== county.toLowerCase()) {
-            return;
-        }
-
-        obj = {};
-        for (i = 0; i < columns.length; i++) {
-            value = row[columns[i].index].trim();
-            value = value.replace(/\$/, "");
-            value = value.replace(/\#/, "");
-            obj[columns[i].name] = value;
-        }
-        countyData.push(obj);
-
-    })
-    // when the end of the CSV document is reached
-    .on("end", function() {
-        var arr = sort_descending(countyData);
-        callback(arr);
     })
     // if any errors occur
     .on("error", function(error) {
-        console.log(error.message);
+        callback(error);
     });
 }
 
-module.exports.dataCounty = {
-    handler: function(request, reply) {
-        var file_name = ["SNAP_Particpation_and_Race_Merged.csv"];
-        var columns = [{
-            "name": "zip",
-            "index": 2
-        }, {
-            "name": "county",
-            "index": 0
-        }, {
-            "name": "totalSnapRecipients",
-            "index": 6
-        }, {
-            "name": "totalIncomeEligibleIndividuals",
-            "index": 10
-        }, {
-            "name": "totalIncomeEligibleButNotReceiving",
-            "index": 14
-        }, {
-            "name": "totalParticipationRate",
-            "index": 18
-        }];
-        read_file_county(file_name[0], request.params.county, columns, function(names) {
-            reply(names);
-        });
-    }
-};
-
-function sort_descending(names) {
+function sortDescending(names) {
     var retArray = [];
     var values = [];
 
@@ -336,7 +97,7 @@ function sort_descending(names) {
             });
         } else {
             // check if this value is higher than any value currently in array
-            for (var i=0; i<values.length; i++) {
+            for (var i = 0; i < values.length; i++) {
                 if (values[i].total < total) {
                     // should be added
                     retArray.splice(values[i].index, 1, names[a]);
@@ -370,3 +131,160 @@ function sort_descending(names) {
 
     return retArray;
 }
+
+module.exports.dataZip = {
+    handler: function(request, reply) {
+
+        async.waterfall([
+            function(waterfallCallback) {
+                // first we search all the CSV files that we can key off zip code
+                async.parallel([
+                    function(parallelCallback) {
+                        var fileName, columns;
+
+                        /*
+                         * SNAP_Particpation_and_Race_Merged.csv
+                         */
+                        fileName = csvContents.SNAP_Particpation_and_Race_Merged.fileName;
+                        columns = csvContents.SNAP_Particpation_and_Race_Merged.columns;
+
+                        readFile(fileName, request.params.zip, 2, columns, false, function(err, data) {
+                            parallelCallback(err, data);
+                        });
+                    },
+                    function(parallelCallback) {
+                        var fileName, columns;
+
+                        /*
+                         * SNAP_Particpation_and_Race_Merged.csv
+                         */
+                        fileName = csvContents.SNAP_Particpation_and_Race_Merged.fileName;
+                        columns = csvContents.SNAP_Eligibility_vs_Participation_plus_SNAP_meals.columns;
+
+                        readFile(fileName, request.params.zip, 2, columns, false, function(err, data) {
+                            parallelCallback(err, data);
+                        });
+
+                    }
+                ], function(err, results) {
+                    var zipcodeData;
+
+                    if (err) {
+                        waterfallCallback(err);
+                        return;
+                    }
+
+                    zipcodeData = {};
+
+                    // combine all the data into one object
+                    for (var i = 0; i < results.length; i++) {
+                        zipcodeData = extend(zipcodeData, results[i]);
+                    }
+
+                    waterfallCallback(null, zipcodeData);
+                });
+
+            }
+        ], function(err, zipcodeData) {
+            var county;
+
+            if (err) {
+                console.error(err);
+
+                if (err.code === 404) {
+                    reply(Hapi.error.notFound(err.message));
+                    return;
+                } else {
+                    reply(Hapi.error.badImplementation(err));
+                    return;
+                }
+            }
+
+            // grab the county from the zipcode data we've found so far
+            county = zipcodeData.county;
+
+            // now we grab all the data from the CSVs we can key off county
+            async.parallel([
+                function(parallelCallback) {
+                    var fileName, columns;
+
+                    /*
+                     * Food_Banks.csv
+                     */
+                    fileName = csvContents.Food_Banks.fileName;
+                    columns = csvContents.Food_Banks.columns;
+
+                    readFile(fileName, county, 0, columns, false, function(err, data) {
+                        parallelCallback(err, data);
+                    });
+                },
+                function(parallelCallback) {
+                    var fileName, columns;
+
+                    /*
+                     * Food_Insecurity.csv
+                     */
+                    fileName = csvContents.Food_Insecurity.fileName;
+                    columns = csvContents.Food_Insecurity.columns;
+
+                    readFile(fileName, county, 0, columns, false, function(err, data) {
+                        parallelCallback(err, data);
+                    });
+                }
+            ], function(err, results) {
+                var allData, i;
+
+                if (err) {
+                    console.error(err);
+
+                    if (err.code === 404) {
+                        reply(Hapi.error.notFound(err.message));
+                        return;
+                    } else {
+                        reply(Hapi.error.badImplementation(err));
+                        return;
+                    }
+                }
+
+                // now combine all the data we've collected so far
+                // into one giant object
+                allData = zipcodeData;
+                for (i = 0; i < results.length; i++) {
+                    allData = extend(allData, results[i]);
+                }
+
+                // send it back to the user
+                reply(allData);
+            });
+        });
+    }
+};
+
+module.exports.dataCounty = {
+    handler: function(request, reply) {
+        var fileName, columns;
+
+        /*
+         * SNAP_Particpation_and_Race_Merged.csv
+         */
+        fileName = csvContents.SNAP_Particpation_and_Race_Merged.fileName;
+        columns = csvContents.SNAP_Particpation_and_Race_Merged.columns;
+
+        readFile(fileName, request.params.county, 0, columns, true, function(err, countyData) {
+            if (err) {
+                console.error(err);
+
+                if (err.code === 404) {
+                    reply(Hapi.error.notFound(err.message));
+                    return;
+                } else {
+                    reply(Hapi.error.badImplementation(err));
+                    return;
+                }
+            }
+
+            countyData = sortDescending(countyData);
+            reply(countyData);
+        });
+    }
+};

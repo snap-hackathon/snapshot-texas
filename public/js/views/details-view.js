@@ -159,13 +159,13 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['White', parseFloat(model.recipientRace_White) ],
-                        ['Black', parseFloat(model.recipientRace_Black) ],
-                        ['Native American', parseFloat(model.recipientRace_NativeAmerican) ],
-                        ['Asian', parseFloat(model.recipientRace_Asian) ],
-                        ['Pacific Islander', parseFloat(model.recipientRace_Pacific_Islander) ],
-                        ['Multi-race', parseFloat(model.recipientRace_Multi_Race) ],
-                        ['Unknown/Missing', parseFloat(model.recipientRace_Unknown_Missing) ]
+                        ['White', parseFloat(model.recipientRaceWhite) ],
+                        ['Black', parseFloat(model.recipientRaceBlack) ],
+                        ['Native American', parseFloat(model.recipientRaceNativeAmerican) ],
+                        ['Asian', parseFloat(model.recipientRaceAsian) ],
+                        ['Pacific Islander', parseFloat(model.recipientRacePacificIslander) ],
+                        ['Multi-race', parseFloat(model.recipientRaceMultiRace) ],
+                        ['Unknown/Missing', parseFloat(model.recipientRaceUnknownMissing) ]
                     ]
                 }]
             });
@@ -195,9 +195,9 @@ define([
                 series: [{
                     type: 'pie',
                     data: [
-                        ['Hispanic', parseFloat(model.recipientEthnicity_hispanic) ],
-                        ['Non-Hispanic', parseFloat(model.recipientEthnicity_Non_Hispanic) ],
-                        ['Unknown/Missing', parseFloat(model.recipientEthnicity_Unknown_Missing) ]
+                        ['Hispanic', parseFloat(model.recipientEthnicityHispanic) ],
+                        ['Non-Hispanic', parseFloat(model.recipientEthnicityNonHispanic) ],
+                        ['Unknown/Missing', parseFloat(model.recipientEthnicityUnknownMissing) ]
                     ]
                 }]
             });

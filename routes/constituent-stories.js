@@ -8,7 +8,7 @@ function parseConstituentStories(callback) {
 
     stories = [];
 
-    csv().from.path(__dirname + "/../Data/constituentstories.csv", {
+    csv().from.path(__dirname + "/../csv/constituentstories.csv", {
         delimiter: ",",
         escape: '"'
     })
@@ -48,7 +48,7 @@ function parseConstituentStory(countyToFind, callback) {
 
     found = false;
 
-    csv().from.path(__dirname + "/../Data/constituentstories.csv", {
+    csv().from.path(__dirname + "/../csv/constituentstories.csv", {
         delimiter: ",",
         escape: '"'
     })
