@@ -4,10 +4,9 @@ var Hapi = require("hapi"),
     yaml = require("js-yaml"),
     fs = require("fs");
 
-var config,
-    mongoConnection,
-    serverOptions, serverConfiguration, server;
+var config, serverOptions, serverConfiguration, server;
 
+// load the configuration
 config = yaml.safeLoad(fs.readFileSync("./config.yaml", "utf8"));
 
 // hapi server options
