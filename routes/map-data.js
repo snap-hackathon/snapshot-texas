@@ -1,7 +1,8 @@
 "use strict";
 
 var Hapi = require("hapi"),
-    csv = require("csv");
+    parseCSV = require("../lib/parse-csv"),
+    csvContents = require("../csv/contents.json");
 
 function parseCoordinates(data) {
     var coords, start, end, i, isLat, lat, lon;
@@ -46,59 +47,28 @@ function parseCoordinates(data) {
     return coords;
 }
 
-function parseMapData(zip, callback) {
-    var found;
-
-    found = false;
-
-    csv().from.path(__dirname + "/../csv/US_ZIP_codes.csv", {
-        delimiter: ",",
-        escape: '"'
-    })
-
-    // when a record is found in the CSV file (a row)
-    .on("record", function(row, index) {
-        var mapData;
-
-        mapData = {};
-
-        // skip the header row
-        if (index === 0) {
-            return;
-        }
-
-        if (row[3] == zip) {
-            found = true;
-
-            mapData.latitude = row[4];
-            mapData.longitude = row[9];
-            mapData.coordinates = parseCoordinates(row[11]);
-            callback(null, mapData);
-            return;
-        }
-    })
-    // when the end of the CSV document is reached
-    .on("end", function() {
-        if (found) {
-            // do nothing
-        } else {
-            callback("Unable to find zip");
-        }
-    })
-    // if any errors occur
-    .on("error", function(error) {
-        callback(error);
-    });
-}
-
 module.exports.lookupMapData = {
     handler: function(request, reply) {
-        parseMapData(request.params.zip, function(err, mapData) {
+        var fileName, columns, zipColumnIndex;
+
+        /*
+         * US_ZIP_codes.csv
+         */
+        fileName = csvContents.US_ZIP_codes.fileName;
+        columns = csvContents.US_ZIP_codes.columns;
+
+        // find the zip column index within this CSV
+        zipColumnIndex = parseCSV.findColumnIndex("zip", columns);
+
+        parseCSV.parse(fileName, request.params.zip, zipColumnIndex, columns, false, function(err, mapData) {
             if (err) {
                 console.error(err);
                 reply(Hapi.error.badImplementation(err));
                 return;
             }
+
+            // parse the coordinates
+            mapData.coordinates = parseCoordinates(mapData.coordinates);
 
             reply(mapData);
         });

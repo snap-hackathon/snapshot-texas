@@ -1,82 +1,10 @@
 "use strict";
 
 var Hapi = require("hapi"),
-    csv = require("csv"),
     async = require("async"),
     extend = require("xtend"),
+    parseCSV = require("../lib/parse-csv"),
     csvContents = require("../csv/contents.json");
-
-function readFile(fileName, rowToMatchItemValue, rowToMatchItemIndex, columns, matchAll, callback) {
-    var foundRow, allMatches;
-
-    foundRow = false;
-
-    // used if we're matching on multiple rows
-    allMatches = [];
-
-    csv().from.path(__dirname + "/../csv/" + fileName, {
-        delimiter: ",",
-        escape: '"'
-    })
-    // when a record is found in the CSV file (a row)
-    .on("record", function(row, index) {
-        var item, value, rowValues;
-
-        // skip the header row
-        if (index === 0) {
-            return;
-        }
-
-        item = row[rowToMatchItemIndex].trim();
-        if (item.toLowerCase() !== rowToMatchItemValue.toLowerCase()) {
-            // skip it, not our item
-            return;
-        }
-
-        // if we got here, we found the right row
-        foundRow = true;
-
-        // grab the row values in our object
-        rowValues = {};
-        for (var i = 0; i < columns.length; i++) {
-            value = row[columns[i].index].trim();
-            value = value.replace(/\$/, "");
-            value = value.replace(/\#/, "");
-            rowValues[columns[i].name] = value;
-        }
-
-        // if we match all rows that have our item to match, then
-        // we keep looking. If not, and we're only matching on the
-        // first occurrance, we stop here and return
-        if (matchAll) {
-            // add this rowValues to our matches
-            allMatches.push(rowValues);
-        } else {
-            // we're done, no errors
-            callback(null, rowValues);
-        }
-    })
-    // when the end of the CSV document is reached
-    .on("end", function() {
-        if (foundRow) {
-            if (matchAll) {
-                // return all our matches
-                callback(null, allMatches);
-            } else {
-                // do nothing, we've already returned
-            }
-        } else {
-            callback({
-                code: 404,
-                message: "Unable to find data for " + rowToMatchItemValue
-            });
-        }
-    })
-    // if any errors occur
-    .on("error", function(error) {
-        callback(error);
-    });
-}
 
 function sortDescending(names) {
     var retArray = [];
@@ -148,7 +76,7 @@ module.exports.dataZip = {
                         fileName = csvContents.SNAP_Particpation_and_Race_Merged.fileName;
                         columns = csvContents.SNAP_Particpation_and_Race_Merged.columns;
 
-                        readFile(fileName, request.params.zip, 2, columns, false, function(err, data) {
+                        parseCSV.parse(fileName, request.params.zip, 2, columns, false, function(err, data) {
                             parallelCallback(err, data);
                         });
                     },
@@ -156,12 +84,12 @@ module.exports.dataZip = {
                         var fileName, columns;
 
                         /*
-                         * SNAP_Particpation_and_Race_Merged.csv
+                         * SNAP_Eligibility_vs_Participation_plus_SNAP_meals.csv
                          */
-                        fileName = csvContents.SNAP_Particpation_and_Race_Merged.fileName;
+                        fileName = csvContents.SNAP_Eligibility_vs_Participation_plus_SNAP_meals.fileName;
                         columns = csvContents.SNAP_Eligibility_vs_Participation_plus_SNAP_meals.columns;
 
-                        readFile(fileName, request.params.zip, 2, columns, false, function(err, data) {
+                        parseCSV.parse(fileName, request.params.zip, 2, columns, false, function(err, data) {
                             parallelCallback(err, data);
                         });
 
@@ -214,7 +142,7 @@ module.exports.dataZip = {
                     fileName = csvContents.Food_Banks.fileName;
                     columns = csvContents.Food_Banks.columns;
 
-                    readFile(fileName, county, 0, columns, false, function(err, data) {
+                    parseCSV.parse(fileName, county, 0, columns, false, function(err, data) {
                         parallelCallback(err, data);
                     });
                 },
@@ -227,7 +155,7 @@ module.exports.dataZip = {
                     fileName = csvContents.Food_Insecurity.fileName;
                     columns = csvContents.Food_Insecurity.columns;
 
-                    readFile(fileName, county, 0, columns, false, function(err, data) {
+                    parseCSV.parse(fileName, county, 0, columns, false, function(err, data) {
                         parallelCallback(err, data);
                     });
                 }
@@ -270,7 +198,7 @@ module.exports.dataCounty = {
         fileName = csvContents.SNAP_Particpation_and_Race_Merged.fileName;
         columns = csvContents.SNAP_Particpation_and_Race_Merged.columns;
 
-        readFile(fileName, request.params.county, 0, columns, true, function(err, countyData) {
+        parseCSV.parse(fileName, request.params.county, 0, columns, true, function(err, countyData) {
             if (err) {
                 console.error(err);
 

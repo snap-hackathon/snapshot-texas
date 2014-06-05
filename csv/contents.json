@@ -1,4 +1,68 @@
 {
+    "constituentstories": {
+        "fileName": "constituentstories.csv",
+        "columns": [{
+            "name": "storyId",
+            "index": 0
+        }, {
+            "name": "county",
+            "index": 1
+        }, {
+            "name": "constituent",
+            "index": 2
+        }, {
+            "name": "story",
+            "index": 3
+        }]
+    },
+    "Food_Banks": {
+        "fileName": "Food_Banks.csv",
+        "columns": [{
+            "name": "foodBank",
+            "index": 1
+        }, {
+            "name": "address",
+            "index": 2
+        }, {
+            "name": "phone",
+            "index": 3
+        }, {
+            "name": "website",
+            "index": 4
+        }]
+    },
+    "Food_Insecurity": {
+        "fileName": "Food_Insecurity.csv",
+        "columns": [{
+            "name": "individualFoodInsecurityRate",
+            "index": 1
+        }, {
+            "name": "foodInsecureIndividuals",
+            "index": 2
+        }, {
+            "name": "childFoodInsecurityRate",
+            "index": 3
+        }, {
+            "name": "foodInsecureChildren",
+            "index": 4
+        }, {
+            "name": "costOfFoodIndex",
+            "index": 5
+        }, {
+            "name": "weightedCostPerMeal",
+            "index": 6
+        }]
+    },
+    "SNAP_Eligibility_vs_Participation_plus_SNAP_meals": {
+        "fileName": "SNAP_Eligibility_vs_Participation_plus_SNAP_meals.csv",
+        "columns": [{
+            "name": "averageBenefitPerRecipient",
+            "index": 7
+        }, {
+            "name": "averageBenefitperMeal",
+            "index": 8
+        }]
+    },
     "SNAP_Particpation_and_Race_Merged": {
         "fileName": "SNAP_Particpation_and_Race_Merged.csv",
         "columns": [{
@@ -105,52 +169,20 @@
             "index": 33
         }]
     },
-    "SNAP_Eligibility_vs_Participation_plus_SNAP_meals": {
-        "fileName": "SNAP_Eligibility_vs_Participation_plus_SNAP_meals.csv",
+    "US_ZIP_codes": {
+        "fileName": "US_ZIP_codes.csv",
         "columns": [{
-            "name": "averageBenefitPerRecipient",
-            "index": 7
-        }, {
-            "name": "averageBenefitperMeal",
-            "index": 8
-        }]
-    },
-    "Food_Banks": {
-        "fileName": "Food_Banks.csv",
-        "columns": [{
-            "name": "foodBank",
-            "index": 1
-        }, {
-            "name": "address",
-            "index": 2
-        }, {
-            "name": "phone",
+            "name": "zip",
             "index": 3
         }, {
-            "name": "website",
-            "index": 4
-        }]
-    },
-    "Food_Insecurity": {
-        "fileName": "Food_Insecurity.csv",
-        "columns": [{
-            "name": "individualFoodInsecurityRate",
-            "index": 1
-        }, {
-            "name": "foodInsecureIndividuals",
-            "index": 2
-        }, {
-            "name": "childFoodInsecurityRate",
-            "index": 3
-        }, {
-            "name": "foodInsecureChildren",
+            "name": "latitude",
             "index": 4
         }, {
-            "name": "costOfFoodIndex",
-            "index": 5
+            "name": "longitude",
+            "index": 9
         }, {
-            "name": "weightedCostPerMeal",
-            "index": 6
+            "name": "coordinates",
+            "index": 11
         }]
     }
 }
