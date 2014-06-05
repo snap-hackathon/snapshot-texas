@@ -1,11 +1,11 @@
 {
-    "name": "CivicHackApp",
-    "description": "civic hack app",
+    "name": "snapshot-texas",
+    "description": "SNAPshot Texas",
     "version": "0.0.1",
     "private": true,
     "repository": {
         "type": "git",
-        "url": "https://github.com/snap-hackathon/CivicHackApp.git"
+        "url": "https://github.com/snap-hackathon/snapshot-texas.git"
     },
     "scripts": {
         "start": "nodemon app.js"

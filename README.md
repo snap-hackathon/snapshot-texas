@@ -1,4 +1,1 @@
-CivicHackApp
-============
-
-Repo for our app.
+# SNAPshot Texas #
