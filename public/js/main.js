@@ -4,8 +4,7 @@ require.config({
         "backbone": "lib/backbone",
         "jquery": "lib/jquery-2.0.3",
         "text": "lib/text",
-        "bootstrap": "lib/bootstrap",
-        "highcharts": "lib/highcharts/highcharts",
+        "highcharts": "lib/highcharts",
         "overview-model": "models/overview-model",
         "overview-view": "views/overview-view",
         "details-model": "models/details-model",
@@ -24,9 +23,6 @@ require.config({
         "backbone": {
             deps: ["underscore", "jquery"],
             exports: "Backbone"
-        },
-        "bootstrap": {
-            deps: ["jquery"]
         },
         "highcharts": {
             deps: ["jquery"],

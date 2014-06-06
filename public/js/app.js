@@ -3,8 +3,6 @@ define([
     "jquery",
     "backbone",
     "router",
-    // our app requires bootstrap
-    "bootstrap",
     // our app requires highcharts
     "highcharts"
 ], function($, Backbone, Router) {
