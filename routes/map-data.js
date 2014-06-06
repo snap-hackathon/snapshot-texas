@@ -52,10 +52,10 @@ module.exports.lookupMapData = {
         var fileName, columns, zipColumnIndex;
 
         /*
-         * US_ZIP_codes.csv
+         * Texas_Zip_codes.csv
          */
-        fileName = csvContents.US_ZIP_codes.fileName;
-        columns = csvContents.US_ZIP_codes.columns;
+        fileName = csvContents.Texas_Zip_codes.fileName;
+        columns = csvContents.Texas_Zip_codes.columns;
 
         // find the zip column index within this CSV
         zipColumnIndex = parseCSV.findColumnIndex("zip", columns);

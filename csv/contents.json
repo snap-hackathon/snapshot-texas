@@ -178,6 +178,22 @@
             "index": 33
         }]
     },
+    "Texas_Zip_codes": {
+        "fileName": "Texas_Zip_codes.csv",
+        "columns": [{
+            "name": "zip",
+            "index": 3
+        }, {
+            "name": "latitude",
+            "index": 4
+        }, {
+            "name": "longitude",
+            "index": 9
+        }, {
+            "name": "coordinates",
+            "index": 11
+        }]
+    },
     "US_ZIP_codes": {
         "fileName": "US_ZIP_codes.csv",
         "columns": [{
