@@ -1,13 +1,14 @@
 "use strict";
 
-var csvData = require("./csv-data"),
+var zipcodeData = require("./zipcode-data"),
+    countyData = require("./county-data"),
     mapData = require("./map-data"),
     constituentStories = require("./constituent-stories");
 
 module.exports.endpoints = [
     // APIs
-    { method: "GET", path: "/api/zipcode-data/{zip}",    config: csvData.dataZip },
-    { method: "GET", path: "/api/county-data/{county}",  config: csvData.dataCounty },
+    { method: "GET", path: "/api/zipcode-data/{zip}",    config: zipcodeData.allData },
+    { method: "GET", path: "/api/county-data/{county}",  config: countyData.sortedData },
     { method: "GET", path: "/api/lookup-map-data/{zip}", config: mapData.lookupMapData },
     { method: "GET", path: "/api/constituent-stories/{county}", config: constituentStories.county },
     // Web App

@@ -6,61 +6,7 @@ var Hapi = require("hapi"),
     parseCSV = require("../lib/parse-csv"),
     csvContents = require("../csv/contents.json");
 
-function sortDescending(names) {
-    var retArray = [];
-    var values = [];
-
-    var maxVal = -1;
-    var amountAdded = 0;
-
-    for (var a = 0; a < names.length; a++) {
-        var add = false;
-        var total = parseInt(names[a].totalIncomeEligibleButNotReceiving);
-
-        if (amountAdded < 5) {
-            add = true;
-            values.push({
-                total: total,
-                index: retArray.length - 1
-            });
-        } else {
-            // check if this value is higher than any value currently in array
-            for (var i = 0; i < values.length; i++) {
-                if (values[i].total < total) {
-                    // should be added
-                    retArray.splice(values[i].index, 1, names[a]);
-                    values[i].total = total;
-
-                    // don't add it later though
-                    add = false;
-                    break;
-                } else {
-                    // should not be added
-                    add = false;
-                }
-            }
-        }
-
-        if (add) {
-            retArray.push(names[a]);
-            amountAdded++;
-        }
-    }
-
-    retArray.sort(function(a, b) {
-        if (parseInt(a.totalIncomeEligibleButNotReceiving) > parseInt(b.totalIncomeEligibleButNotReceiving)) {
-            return -1;
-        } else if (parseInt(a.totalIncomeEligibleButNotReceiving) < parseInt(b.totalIncomeEligibleButNotReceiving)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    });
-
-    return retArray;
-}
-
-module.exports.dataZip = {
+module.exports.allData = {
     handler: function(request, reply) {
 
         async.waterfall([
@@ -68,7 +14,7 @@ module.exports.dataZip = {
                 // first we search all the CSV files that we can key off zip code
                 async.parallel([
                     function(parallelCallback) {
-                        var fileName, columns;
+                        var fileName, columns, zipColumnIndex;
 
                         /*
                          * SNAP_Particpation_and_Race_Merged.csv
@@ -76,12 +22,15 @@ module.exports.dataZip = {
                         fileName = csvContents.SNAP_Particpation_and_Race_Merged.fileName;
                         columns = csvContents.SNAP_Particpation_and_Race_Merged.columns;
 
-                        parseCSV.parse(fileName, request.params.zip, 2, columns, false, function(err, data) {
+                        // find the zip column index within this CSV
+                        zipColumnIndex = parseCSV.findColumnIndex("zip", columns);
+
+                        parseCSV.parse(fileName, request.params.zip, zipColumnIndex, columns, false, function(err, data) {
                             parallelCallback(err, data);
                         });
                     },
                     function(parallelCallback) {
-                        var fileName, columns;
+                        var fileName, columns, zipColumnIndex;
 
                         /*
                          * SNAP_Eligibility_vs_Participation_plus_SNAP_meals.csv
@@ -89,7 +38,10 @@ module.exports.dataZip = {
                         fileName = csvContents.SNAP_Eligibility_vs_Participation_plus_SNAP_meals.fileName;
                         columns = csvContents.SNAP_Eligibility_vs_Participation_plus_SNAP_meals.columns;
 
-                        parseCSV.parse(fileName, request.params.zip, 2, columns, false, function(err, data) {
+                        // find the zip column index within this CSV
+                        zipColumnIndex = parseCSV.findColumnIndex("zip", columns);
+
+                        parseCSV.parse(fileName, request.params.zip, zipColumnIndex, columns, false, function(err, data) {
                             parallelCallback(err, data);
                         });
 
@@ -134,7 +86,7 @@ module.exports.dataZip = {
             // now we grab all the data from the CSVs we can key off county
             async.parallel([
                 function(parallelCallback) {
-                    var fileName, columns;
+                    var fileName, columns, countyColumnIndex;
 
                     /*
                      * Food_Banks.csv
@@ -142,12 +94,15 @@ module.exports.dataZip = {
                     fileName = csvContents.Food_Banks.fileName;
                     columns = csvContents.Food_Banks.columns;
 
-                    parseCSV.parse(fileName, county, 0, columns, false, function(err, data) {
+                    // find the county column index within this CSV
+                    countyColumnIndex = parseCSV.findColumnIndex("county", columns);
+
+                    parseCSV.parse(fileName, county, countyColumnIndex, columns, false, function(err, data) {
                         parallelCallback(err, data);
                     });
                 },
                 function(parallelCallback) {
-                    var fileName, columns;
+                    var fileName, columns, countyColumnIndex;
 
                     /*
                      * Food_Insecurity.csv
@@ -155,7 +110,10 @@ module.exports.dataZip = {
                     fileName = csvContents.Food_Insecurity.fileName;
                     columns = csvContents.Food_Insecurity.columns;
 
-                    parseCSV.parse(fileName, county, 0, columns, false, function(err, data) {
+                    // find the county column index within this CSV
+                    countyColumnIndex = parseCSV.findColumnIndex("county", columns);
+
+                    parseCSV.parse(fileName, county, countyColumnIndex, columns, false, function(err, data) {
                         parallelCallback(err, data);
                     });
                 }
@@ -184,35 +142,6 @@ module.exports.dataZip = {
                 // send it back to the user
                 reply(allData);
             });
-        });
-    }
-};
-
-module.exports.dataCounty = {
-    handler: function(request, reply) {
-        var fileName, columns;
-
-        /*
-         * SNAP_Particpation_and_Race_Merged.csv
-         */
-        fileName = csvContents.SNAP_Particpation_and_Race_Merged.fileName;
-        columns = csvContents.SNAP_Particpation_and_Race_Merged.columns;
-
-        parseCSV.parse(fileName, request.params.county, 0, columns, true, function(err, countyData) {
-            if (err) {
-                console.error(err);
-
-                if (err.code === 404) {
-                    reply(Hapi.error.notFound(err.message));
-                    return;
-                } else {
-                    reply(Hapi.error.badImplementation(err));
-                    return;
-                }
-            }
-
-            countyData = sortDescending(countyData);
-            reply(countyData);
         });
     }
 };
