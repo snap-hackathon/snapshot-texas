@@ -6,7 +6,7 @@ define([
 
     return Backbone.Model.extend({
         url: function() {
-            return "/api/county-data/" + this.county;
+            return "/api/county-sorted-data/" + this.county;
         },
 
         initialize: function(county) {
