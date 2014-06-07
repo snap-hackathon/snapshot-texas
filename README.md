@@ -4,6 +4,31 @@ Displays data about the SNAP program for the Texas Food Bank Network. The data
 is organized by zip code to show how SNAP benefits are used in the area, and also
 general demographics of the region.
 
+## Documentation ##
+
+  - [Getting Started](#getting-started)
+    - [Install Node.js](#install-nodejs)
+    - [Install Git](#install-git)
+    - [Clone the Project](#clone-the-project)
+    - [Install Dependencies](#install-dependencies)
+    - [Start the Application](#start-the-application)
+  - [CSV Files](#csv-files)
+    - [Adding a new CSV file](#adding-a-new-csv-file)
+  - [Architecture](#architecture)
+    - [Server Side](#server-side)
+      - [app.js](#appjs)
+      - [routes](#routes)
+      - [views/index.html](#viewsindexhtml)
+    - [Client Side](#client-side)
+      - [public/js/main.js](#publicjsmainjs)
+      - [public/js/app.js](#publicjsappjs)
+      - [public/js/router.js](#publicjsrouterjs)
+  - [APIs](#apis)
+    - [/api/zipcode-data/{zip}](#apizipcode-datazip)
+    - [/api/county-sorted-data/{county}](#apicounty-sorted-datacounty)
+    - [/api/lookup-map-data/{zip}](#apilookup-map-datazip)
+    - [/api/constituent-stories/{county}](#apiconstituent-storiescounty)
+
 ## Getting Started ##
 
 ### Install Node.js ###
@@ -149,7 +174,7 @@ Each view is associated to a template.
 
 Each of the APIs below is defined in the `routes` directory.
 
-### /api/zipcode-data/{zip} ###
+### `/api/zipcode-data/{zip}` ###
 
 A `GET` request to this endpoint, specifying a zip code within Texas, returns
 SNAP data for that zip code. For example, a request for
@@ -206,7 +231,7 @@ SNAP data for that zip code. For example, a request for
 }
 </pre>
 
-### /api/county-sorted-data/{county} ###
+### `/api/county-sorted-data/{county}` ###
 
 A `GET` request to this endpoint, specifying a county within Texas, returns
 a set of 5 blocks of data for the top 5 zip codes within that county sorted
@@ -255,7 +280,7 @@ For example, a request for `/api/county-sorted-data/Travis` would return:
 ]
 </pre>
 
-### /api/lookup-map-data/{zip} ###
+### `/api/lookup-map-data/{zip}` ###
 
 A `GET` request to this endpoint, specifying a zip within Texas, returns
 data necessary for Google Maps to provide a map of that zip code, outlining
@@ -304,7 +329,7 @@ the zip code on the map. For example, a request to
 }
 </pre>
 
-### /api/constituent-stories/{county} ###
+### `/api/constituent-stories/{county}` ###
 
 A `GET` request to this endpoint, specifying a county in Texas, returns
 a story for a constituent (along with other details) within that county.
